@@ -7,10 +7,14 @@ export default class Loading extends Component {
     constructor(props) {
         super(props);
     }
+    componentDidMount(){
+        //check auth
+        this.props.navigation.navigate(1 == 2 ? 'App' : 'Auth'); //check token
+    }
     render(){
         return(
             <View style={styles.mainContainer}>
-                <ActivityIndicator size='large' color={colors.PRIMARY} animating={this.props.isLoading}/>
+                <ActivityIndicator size='large' color={colors.PRIMARY} animating={false}/>
             </View>
         );
     }

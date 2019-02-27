@@ -1,6 +1,7 @@
 const initialState = {
     isLoggingIn: false,
-    isAuthenticated: false
+    isAuthenticated: false,
+    token: '',
 }
 
 export default (state = initialState, action) => {

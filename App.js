@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, AsyncStorage, ActivityIndicator} from 'react-native';
+import {StyleSheet, View, AsyncStorage, ActivityIndicator} from 'react-native';
 
 import AppIntroSlider from 'react-native-app-intro-slider';
 
-import LoadingScreen from './src/screens/loading';
+import MainNavigator from './src/navigations';
 
 const styles = StyleSheet.create({
   image: {
@@ -63,7 +63,7 @@ export default class App extends Component {
         AsyncStorage.setItem('alreadyUsed', 'true');
         this.setState({isLoading: false});
       } else {
-        this.setState({showRealApp: true, isLoading: false})
+        this.setState({showRealApp: true, isLoading: false});
       }
     })
   }
@@ -71,14 +71,14 @@ export default class App extends Component {
   render() {
     //console.log(this.state);
     if (this.state.isLoading){
-      return <LoadingScreen isLoading={this.state.isLoading}/>;
+      return (
+        <View style={styles.mainContainer}>
+            <ActivityIndicator size='large' animating={this.state.isLoading}/>
+        </View>
+      );
     } else {
       if (this.state.showRealApp) {
-        return (
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
-            <Text>Welcome to React Native!</Text>
-          </View>
-        );
+        return <MainNavigator/>;
       } else {
         return <AppIntroSlider slides={slides} onDone={this._onDone}
                 showSkipButton={true} onSkip={this._onSkip}/>;
@@ -86,5 +86,3 @@ export default class App extends Component {
     }
   }
 }
-
-
