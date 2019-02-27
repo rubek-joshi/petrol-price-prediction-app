@@ -1,3 +1,3 @@
-export default colors = {
+export default {
     PRIMARY: '#47c1ff',
 };
