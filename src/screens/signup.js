@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
+import AnimateLoadingButton from 'react-native-animate-loading-button';
 
 class SignUp extends Component {
     constructor(props) {
@@ -11,6 +12,14 @@ class SignUp extends Component {
             password: '',
             confirmPassword: ''
         }
+        this._signUp = this._signUp.bind(this);
+    }
+    _signUp() {
+        this.loadingButton.showLoading(true);
+        // mock
+        setTimeout(() => {
+          this.loadingButton.showLoading(false);
+        }, 1000);
     }
     render(){
         return (
@@ -47,6 +56,18 @@ class SignUp extends Component {
                     onChangeText={(confirmPassword) => this.setState({confirmPassword: confirmPassword})}
                     ref={(input) => {this.confirmPasswordTextInput = input;}}
                     returnKeyType={"done"}/>
+
+                <AnimateLoadingButton
+                    ref={c => (this.loadingButton = c)}
+                    width={300}
+                    height={50}
+                    title="Sign Up"
+                    titleFontSize={16}
+                    titleColor="rgb(255,255,255)"
+                    backgroundColor="rgb(29,18,121)"
+                    borderRadius={4}
+                    onPress={this._signUp}
+                />
             </View>
         );
     }

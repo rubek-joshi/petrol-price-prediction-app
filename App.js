@@ -14,28 +14,28 @@ const styles = StyleSheet.create({
 
 const slides = [
   {
-    key: 'somethun',
-    title: 'Title 1',
-    text: 'Description.\nSay something cool',
-    image: require('./src/assets/1.jpg'),
+    key: 'slide-i',
+    title: 'Daily Market Price',
+    text: 'View and stay updated with the current market price of petrol.',
+    image: require('./src/assets/slides/1.png'),
     imageStyle: styles.image,
     backgroundColor: '#59b2ab',
   },
   {
-    key: 'somethun-dos',
-    title: 'Title 2',
-    text: 'Other cool stuff',
-    image: require('./src/assets/2.jpg'),
+    key: 'slide-ii',
+    title: 'Petrol Calculator',
+    text: 'Use petrol calculator to quickly calculate petrol price according to litre or amount.',
+    image: require('./src/assets/slides/2.png'),
     imageStyle: styles.image,
     backgroundColor: '#febe29',
   },
   {
-    key: 'somethun1',
-    title: 'Rocket guy',
-    text: 'I\'m already out of descriptions\n\nLorem ipsum bla bla bla',
-    image: require('./src/assets/3.jpg'),
+    key: 'slide-iii',
+    title: 'History',
+    text: 'Check history of petrol prices and see what changes have occured in the past.',
+    image: require('./src/assets/slides/3.png'),
     imageStyle: styles.image,
-    backgroundColor: '#22bcb5',
+    backgroundColor: '#ea6767',
   }
 ];
 
