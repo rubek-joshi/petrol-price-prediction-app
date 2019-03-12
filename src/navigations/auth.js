@@ -1,14 +1,23 @@
-import { createBottomTabNavigator } from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation';
 
 import SignUpScreen from '../screens/signup';
 import SignInScreen from '../screens/signin';
 
-const AuthStack = createBottomTabNavigator({
+const AuthStack = createMaterialTopTabNavigator({
     SignIn: SignInScreen,
     SignUp: SignUpScreen
 },
 {
-    initialRouteName: 'SignIn'
+    initialRouteName: 'SignIn',
+    tabBarOptions: {
+        upperCaseLabel: false,
+        tabStyle: {
+            display: 'none',
+        },
+        indicatorStyle: {
+            height: 0, //hide indicator
+        }
+    }
 }
 );
 

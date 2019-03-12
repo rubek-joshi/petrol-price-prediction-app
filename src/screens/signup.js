@@ -75,12 +75,12 @@ class SignUp extends Component {
 
                 <AnimateLoadingButton
                     ref={c => (this.loadingButton = c)}
-                    width={300}
+                    width={260}
                     height={50}
                     title="Sign Up"
                     titleFontSize={16}
-                    titleColor="rgb(255,255,255)"
-                    backgroundColor="rgb(29,18,121)"
+                    titleColor="#FFF"
+                    backgroundColor="#2a2b2b"
                     borderRadius={4}
                     onPress={this._signUp}
                 />
