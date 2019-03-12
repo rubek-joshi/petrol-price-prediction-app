@@ -70,7 +70,7 @@ class SignIn extends Component {
                     />
 
                     <View style={{alignItems: 'center'}}>
-                        <TouchableOpacity style={styles.skipArea}>
+                        <TouchableOpacity style={styles.skipArea} onPress={() => this.props.navigation.navigate('App')}>
                             <Text style={{color: '#FFF'}}>Skip</Text>
                         </TouchableOpacity>
                     </View>
@@ -78,7 +78,7 @@ class SignIn extends Component {
 
                 <View style={{alignItems: 'center'}}>
                     <TouchableOpacity style={styles.newUserClickArea} onPress={() => this.props.navigation.navigate('SignUp')}>
-                        <Text>New User? Click here to sign up!</Text>
+                        <Text style={{color: '#FFF'}}>New User? Click here to sign up!</Text>
                     </TouchableOpacity>
                 </View>
 
