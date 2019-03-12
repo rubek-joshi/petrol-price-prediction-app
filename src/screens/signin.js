@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Keyboard } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { TextField } from 'react-native-material-textfield';
 import AnimateLoadingButton from 'react-native-animate-loading-button';
 
@@ -26,9 +27,12 @@ class SignIn extends Component {
     }
     render(){
         return (
-            <View style={styles.mainContainer}>
+            <LinearGradient colors={['#44A59B', '#15DBA5']} style={styles.mainContainer}>
                 <View style={{marginBottom: 20}}>
                     <TextField
+                        textColor={'#FFF'}
+                        baseColor={'#FFF'}
+                        tintColor={'#FFF'}
                         label='Email'
                         value={this.state.email}
                         onChangeText={(email) => this.setState({email: email})}
@@ -38,6 +42,9 @@ class SignIn extends Component {
                     />
 
                     <TextField
+                        textColor={'#FFF'}
+                        baseColor={'#FFF'}
+                        tintColor={'#FFF'}
                         label='Password'
                         value={this.state.password}
                         onChangeText={(password) => this.setState({password: password})}
@@ -51,7 +58,7 @@ class SignIn extends Component {
 
                 <AnimateLoadingButton
                     ref={c => (this.loadingButton = c)}
-                    width={300}
+                    width={260}
                     height={50}
                     title="Sign In"
                     titleFontSize={16}
@@ -63,10 +70,10 @@ class SignIn extends Component {
 
                 <View style={{alignItems: 'center'}}>
                     <TouchableOpacity style={styles.skipArea}>
-                        <Text>Skip</Text>
+                        <Text style={{color: '#FFF'}}>Skip</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </LinearGradient>
         );
     }
 }

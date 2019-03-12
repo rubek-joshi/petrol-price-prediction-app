@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Keyboard } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { TextField } from 'react-native-material-textfield';
 import AnimateLoadingButton from 'react-native-animate-loading-button';
 
@@ -15,6 +16,7 @@ class SignUp extends Component {
         this._signUp = this._signUp.bind(this);
     }
     _signUp() {
+        Keyboard.dismiss();
         this.loadingButton.showLoading(true);
         // mock
         setTimeout(() => {
@@ -23,39 +25,53 @@ class SignUp extends Component {
     }
     render(){
         return (
-            <View style={styles.mainContainer}>
-                <TextField
-                    label='Full Name'
-                    value={this.state.fullname}
-                    onChangeText={(fullname) => this.setState({fullname: fullname})}
-                    returnKeyType={"next"}
-                    onSubmitEditing={() => this.emailTextInput.focus()}
-                    blurOnSubmit={false}/>
+            <LinearGradient colors={['#44A59B', '#15DBA5']} style={styles.mainContainer}>
+                <View style={{marginBottom: 20}}>
+                    <TextField
+                        textColor={'#FFF'}
+                        baseColor={'#FFF'}
+                        tintColor={'#FFF'}
+                        label='Full Name'
+                        value={this.state.fullname}
+                        onChangeText={(fullname) => this.setState({fullname: fullname})}
+                        returnKeyType={"next"}
+                        onSubmitEditing={() => this.emailTextInput.focus()}
+                        blurOnSubmit={false}/>
 
-                <TextField
-                    label='Email'
-                    value={this.state.email}
-                    onChangeText={(email) => this.setState({email: email})}
-                    ref={(input) => {this.emailTextInput = input;}}
-                    returnKeyType={"next"}
-                    onSubmitEditing={() => this.passwordTextInput.focus()}
-                    blurOnSubmit={false}/>
+                    <TextField
+                        textColor={'#FFF'}
+                        baseColor={'#FFF'}
+                        tintColor={'#FFF'}
+                        label='Email'
+                        value={this.state.email}
+                        onChangeText={(email) => this.setState({email: email})}
+                        ref={(input) => {this.emailTextInput = input;}}
+                        returnKeyType={"next"}
+                        onSubmitEditing={() => this.passwordTextInput.focus()}
+                        blurOnSubmit={false}/>
 
-                <TextField
-                    label='Password'
-                    value={this.state.password}
-                    onChangeText={(password) => this.setState({password: password})}
-                    ref={(input) => {this.passwordTextInput = input;}}
-                    returnKeyType={"next"}
-                    onSubmitEditing={() => this.confirmPasswordTextInput.focus()}
-                    blurOnSubmit={false}/>
+                    <TextField
+                        textColor={'#FFF'}
+                        baseColor={'#FFF'}
+                        tintColor={'#FFF'}
+                        label='Password'
+                        value={this.state.password}
+                        onChangeText={(password) => this.setState({password: password})}
+                        ref={(input) => {this.passwordTextInput = input;}}
+                        returnKeyType={"next"}
+                        onSubmitEditing={() => this.confirmPasswordTextInput.focus()}
+                        blurOnSubmit={false}/>
 
-                <TextField
-                    label='Confirm Password'
-                    value={this.state.confirmPassword}
-                    onChangeText={(confirmPassword) => this.setState({confirmPassword: confirmPassword})}
-                    ref={(input) => {this.confirmPasswordTextInput = input;}}
-                    returnKeyType={"done"}/>
+                    <TextField
+                        textColor={'#FFF'}
+                        baseColor={'#FFF'}
+                        tintColor={'#FFF'}
+                        label='Confirm Password'
+                        value={this.state.confirmPassword}
+                        onChangeText={(confirmPassword) => this.setState({confirmPassword: confirmPassword})}
+                        ref={(input) => {this.confirmPasswordTextInput = input;}}
+                        onSubmitEditing={() => this._signUp()}/>
+                </View>
 
                 <AnimateLoadingButton
                     ref={c => (this.loadingButton = c)}
@@ -68,7 +84,7 @@ class SignUp extends Component {
                     borderRadius={4}
                     onPress={this._signUp}
                 />
-            </View>
+            </LinearGradient>
         );
     }
 }
@@ -76,6 +92,8 @@ class SignUp extends Component {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
+        justifyContent: 'center',
+        padding: 16
     }
 });
 
