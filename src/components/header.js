@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import MyColors from '../config/colors';
-import MyFont from '../config/font';
+import MyFont from '../config/header';
 
 class Header extends Component {
     constructor(props) {

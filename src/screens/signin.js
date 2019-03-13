@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Keyboard } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Keyboard, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextField } from 'react-native-material-textfield';
 import AnimateLoadingButton from 'react-native-animate-loading-button';
@@ -29,6 +29,9 @@ class SignIn extends Component {
         return (
             <LinearGradient colors={['#44A59B', '#15DBA5']} style={styles.mainContainer}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
+                    <View style={styles.logoContainer}>
+                        <Image source={require('../assets/logo.png')}/>
+                    </View>
                     <View style={{marginBottom: 20}}>
                         <TextField
                             textColor={'#FFF'}
@@ -64,7 +67,7 @@ class SignIn extends Component {
                         title="Sign In"
                         titleFontSize={16}
                         titleColor="#FFF"
-                        backgroundColor="#2a2b2b"
+                        backgroundColor="#34485C"
                         borderRadius={4}
                         onPress={this._onPressHandler}
                     />
@@ -103,6 +106,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: 40,
+    },
+    logoContainer: {
+        alignItems: 'center'
     }
 });
 

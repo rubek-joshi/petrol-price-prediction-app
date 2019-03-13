@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, TextInput } from 'react-native';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import MyColors from '../config/colors';
 import Header from '../components/header';
 
 class Calculator extends Component {
     static navigationOptions = {
-        tabBarIcon: <Icon name="md-calculator" size={24} color="#000" />
+        tabBarIcon: <Icon name="md-calculator" size={24} color={MyColors.MAIN_TAB_MENU} />
     }
     constructor(props) {
         super(props);

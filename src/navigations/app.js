@@ -1,5 +1,7 @@
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
+import MyColors from '../config/colors';
+
 import HomeScreen from '../screens/home';
 import NewsFeedScreen from '../screens/newsfeed';
 import CalculatorScreen from '../screens/calculator';
@@ -16,7 +18,7 @@ const Home = createMaterialBottomTabNavigator({
     activeTintColor: '#FFF',
     inactiveTintColor: '#000',
     barStyle: {
-        backgroundColor: '#2a2b2b',
+        backgroundColor: `${MyColors.PRIMARY}`,
         paddingVertical: 5
     }
 });

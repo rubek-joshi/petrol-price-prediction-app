@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Keyboard } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Keyboard, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextField } from 'react-native-material-textfield';
 import AnimateLoadingButton from 'react-native-animate-loading-button';
@@ -30,7 +30,10 @@ class SignUp extends Component {
                 <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.navigate('SignIn')}>
                     <Icon name="arrow-back" size={30} color="#FFF" />
                 </TouchableOpacity>
-                <View style={{flex: 1, justifyContent: 'center'}}>
+                <View style={styles.logoContainer}>
+                    <Image source={require('../assets/logo.png')} style={{height: 180, width: 130}}/>
+                </View>
+                <View style={{flex: 1,}}>
                     <View style={{marginBottom: 20}}>
                         <TextField
                             textColor={'#FFF'}
@@ -85,7 +88,7 @@ class SignUp extends Component {
                         title="Sign Up"
                         titleFontSize={16}
                         titleColor="#FFF"
-                        backgroundColor="#2a2b2b"
+                        backgroundColor="#34485C"
                         borderRadius={4}
                         onPress={this._signUp}
                     />
@@ -104,6 +107,9 @@ const styles = StyleSheet.create({
         height: 40,
         width: 40,
         justifyContent: 'center'
+    },
+    logoContainer: {
+        alignItems: 'center',
     }
 });
 

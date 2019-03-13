@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import MyColors from '../config/colors';
 
 class Home extends Component {
     static navigationOptions = {
-        tabBarIcon: <Icon name="home" size={24} color="#000" />
+        tabBarIcon: <Icon name="home" size={24} color={MyColors.MAIN_TAB_MENU} />
     }
     render(){
         return (
