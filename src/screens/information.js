@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-class Home extends Component {
+class Information extends Component {
     static navigationOptions = {
-        tabBarIcon: <Icon name="home" size={24} color="#000" />
+        tabBarIcon: <Icon name="information-variant" size={24} color="#000" />
     }
     render(){
         return (
             <View style={styles.mainContainer}>
-                <Text>Home</Text>
+                <Text>Information</Text>
             </View>
         );
     }
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Home;
+export default Information;
