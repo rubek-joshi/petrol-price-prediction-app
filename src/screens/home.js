@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, RefreshControl, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, ScrollView, RefreshControl, View, TouchableOpacity, Text, Animated } from 'react-native';
 import MyColors from '../config/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -18,16 +18,18 @@ class Home extends Component {
         super(props);
         this.state = {
             refreshing: false,
-            showLastUpdated: true
+            opacity: new Animated.Value(1),
         }
+        this._onRefresh = this._onRefresh.bind(this);
     }
 
     _onRefresh = () => {
-        this.setState({
-            refreshing: true,
-            showLastUpdated: false
-        });
-        setTimeout(() => {this.setState({refreshing: false, showLastUpdated: true})}, 2000);
+        Animated.timing(this.state.opacity, { toValue: 0.5, duration: 1000 }).start();
+        this.setState({refreshing: true});
+        setTimeout(() => {
+            this.setState({refreshing: false});
+            Animated.timing(this.state.opacity, { toValue: 1, duration: 1000 }).start();
+        }, 2000);
     }
 
     render(){
@@ -40,10 +42,16 @@ class Home extends Component {
                         />
                 }
             >
-                {this.state.showLastUpdated && 
-                <View style={styles.lastUpdatedBox}>
+                
+                <Animated.View style={{
+                    ...this.props.style,
+                    padding: 16,
+                    backgroundColor: '#FFF',
+                    elevation: 1,
+                    opacity: this.state.opacity 
+                    }}>
                     <Text>Last updated on: 15/03/2019</Text>
-                </View>}
+                </Animated.View>
 
                 <View style={styles.box}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -63,11 +71,6 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         backgroundColor: '#F6F6F6'
-    },
-    lastUpdatedBox: {
-        padding: 16,
-        backgroundColor: '#FFF',
-        elevation: 1
     },
     box: {
         borderRadius: 3,
