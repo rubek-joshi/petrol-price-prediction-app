@@ -3,6 +3,8 @@ import { StyleSheet, ScrollView, RefreshControl, View, TouchableOpacity, Text, A
 import MyColors from '../config/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import { View as AnimatableView } from 'react-native-animatable';
+
 class Home extends Component {
     static navigationOptions = {
         title: 'Home',
@@ -18,17 +20,15 @@ class Home extends Component {
         super(props);
         this.state = {
             refreshing: false,
-            opacity: new Animated.Value(1),
+            flashLastUpdated: false
         }
         this._onRefresh = this._onRefresh.bind(this);
     }
 
     _onRefresh = () => {
-        Animated.timing(this.state.opacity, { toValue: 0.5, duration: 1000 }).start();
-        this.setState({refreshing: true});
+        this.setState({refreshing: true, flashLastUpdated: true});
         setTimeout(() => {
-            this.setState({refreshing: false});
-            Animated.timing(this.state.opacity, { toValue: 1, duration: 1000 }).start();
+            this.setState({refreshing: false, flashLastUpdated: false}); 
         }, 2000);
     }
 
@@ -43,15 +43,11 @@ class Home extends Component {
                 }
             >
                 
-                <Animated.View style={{
-                    ...this.props.style,
-                    padding: 16,
-                    backgroundColor: '#FFF',
-                    elevation: 1,
-                    opacity: this.state.opacity 
-                    }}>
+                <AnimatableView animation={this.state.flashLastUpdated ? 'flash' : undefined}
+                    style={styles.lastUpdatedBox}
+                    easing='linear' useNativeDriver>
                     <Text>Last updated on: 15/03/2019</Text>
-                </Animated.View>
+                </AnimatableView>
 
                 <View style={styles.box}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -61,6 +57,8 @@ class Home extends Component {
                             <Text style={{paddingLeft: 5}}>History</Text>
                         </TouchableOpacity>
                     </View>
+
+                    <Text>Nrs. 110/litre</Text>
                 </View>
             </ScrollView>
         );
@@ -78,6 +76,11 @@ const styles = StyleSheet.create({
         elevation: 1,
         marginVertical: 8,
         paddingHorizontal: 16
+    },
+    lastUpdatedBox: {
+        padding: 16,
+        backgroundColor: '#FFF',
+        elevation: 1
     },
     historyButton: {
         flexDirection: 'row',
