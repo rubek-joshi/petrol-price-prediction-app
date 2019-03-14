@@ -34,33 +34,36 @@ class Home extends Component {
 
     render(){
         return (
-            <ScrollView 
-                style={styles.mainContainer}
-                refreshControl={
-                    <RefreshControl refreshing={this.state.refreshing}
-                        onRefresh={this._onRefresh}
+            <View style={styles.mainContainer}>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh}
                         />
-                }
-            >
-                
-                <AnimatableView animation={this.state.flashLastUpdated ? 'flash' : undefined}
-                    style={styles.lastUpdatedBox}
-                    easing='linear' useNativeDriver>
-                    <Text>Last updated on: 15/03/2019</Text>
-                </AnimatableView>
+                    }
+                >
+                    
+                    <AnimatableView animation={this.state.flashLastUpdated ? 'flash' : undefined}
+                        style={styles.lastUpdatedBox}
+                        easing='linear' useNativeDriver>
+                        <Text>Last updated on: 15/03/2019</Text>
+                    </AnimatableView>
 
-                <View style={styles.box}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={{flex: 1, fontWeight: '600'}}>Petrol Market Price</Text>
-                        <TouchableOpacity style={styles.historyButton}>
-                            <Icon name="history" size={24} color={MyColors.PRIMARY} />
-                            <Text style={{paddingLeft: 5}}>History</Text>
-                        </TouchableOpacity>
+                    <View style={styles.box}>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Text style={{flex: 1, fontWeight: '600'}}>Petrol Market Price</Text>
+                            <TouchableOpacity style={styles.historyButton} onPress={() => this.props.navigation.navigate('History')}>
+                                <Icon name="history" size={24} color={MyColors.PRIMARY} />
+                                <Text style={{paddingLeft: 5}}>History</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.dailyPriceContainer}>
+                            <Text style={{fontSize: 30, fontWeight: '400'}}>Nrs.<Text style={{fontSize: 60}}>110</Text>/litre</Text>
+                        </View>
                     </View>
-
-                    <Text>Nrs. 110/litre</Text>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </View>
         );
     }
 }
@@ -75,7 +78,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         elevation: 1,
         marginVertical: 8,
-        paddingHorizontal: 16
+        marginHorizontal: 16,
+        paddingHorizontal: 16,
     },
     lastUpdatedBox: {
         padding: 16,
@@ -90,6 +94,10 @@ const styles = StyleSheet.create({
         width: 100,
         borderWidth: StyleSheet.hairlineWidth,
         marginVertical: 8
+    },
+    dailyPriceContainer:{
+        alignItems: 'center',
+        paddingBottom: 16
     }
 });
 

@@ -20,7 +20,7 @@ HomeStack.navigationOptions = {
     tabBarIcon: <Icon name="home" size={24} color={MyColors.MAIN_TAB_MENU} />
 }
 
-/* HomeStack.navigationOptions = ({ navigation }) => {
+HomeStack.navigationOptions = ({ navigation }) => {
     let tabBarVisible = true;
     if (navigation.state.index > 0) {
       tabBarVisible = false;
@@ -30,7 +30,7 @@ HomeStack.navigationOptions = {
       tabBarVisible,
     };
 };
- */
+
 
 const MainNavigator = createMaterialBottomTabNavigator({
     Home: HomeStack,
