@@ -13,26 +13,14 @@ import HistoryScreen from '../screens/history';
 
 const HomeStack = createStackNavigator({
     Home: HomeScreen,
-    History: HistoryScreen
+    /* any other route you want to render under the tab bar */
 });
 
 HomeStack.navigationOptions = {
     tabBarIcon: <Icon name="home" size={24} color={MyColors.MAIN_TAB_MENU} />
 }
 
-HomeStack.navigationOptions = ({ navigation }) => {
-    let tabBarVisible = true;
-    if (navigation.state.index > 0) {
-      tabBarVisible = false;
-    }
-
-    return {
-      tabBarVisible,
-    };
-};
-
-
-const MainNavigator = createMaterialBottomTabNavigator({
+const TabNavigator = createMaterialBottomTabNavigator({
     Home: HomeStack,
     NewsFeed: NewsFeedScreen,
     Calculator: CalculatorScreen,
@@ -48,4 +36,14 @@ const MainNavigator = createMaterialBottomTabNavigator({
     },
 });
 
-export default MainNavigator;
+TabNavigator.navigationOptions = {
+    header: null
+}
+
+const MainStack = createStackNavigator({
+    Tabs: TabNavigator,
+    History: HistoryScreen,
+    /* any other route you want to render above the tab bar */
+});
+
+export default MainStack;

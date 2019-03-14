@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, RefreshControl, View, TouchableOpacity, Text, Animated } from 'react-native';
-import MyColors from '../config/colors';
+import { StyleSheet, ScrollView, RefreshControl, View, TouchableOpacity, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import { View as AnimatableView } from 'react-native-animatable';
+import PureChart from 'react-native-pure-chart';
+import MyColors from '../config/colors';
 
 class Home extends Component {
     static navigationOptions = {
@@ -33,6 +33,30 @@ class Home extends Component {
     }
 
     render(){
+        let sampleData = [
+            {
+              seriesName: 'series1',
+              data: [
+                {x: '2018-02-01', y: 30},
+                {x: '2018-02-02', y: 200},
+                {x: '2018-02-03', y: 170},
+                {x: '2018-02-04', y: 250},
+                {x: '2018-02-05', y: 10}
+              ],
+              color: `${MyColors.PRIMARY}`
+            },
+            {
+              seriesName: 'series2',
+              data: [
+                {x: '2018-02-01', y: 20},
+                {x: '2018-02-02', y: 100},
+                {x: '2018-02-03', y: 140},
+                {x: '2018-02-04', y: 550},
+                {x: '2018-02-05', y: 40}
+              ],
+              color: `${MyColors.secondary}`
+            }
+        ]
         return (
             <View style={styles.mainContainer}>
                 <ScrollView
@@ -61,6 +85,14 @@ class Home extends Component {
                         <View style={styles.dailyPriceContainer}>
                             <Text style={{fontSize: 30, fontWeight: '400'}}>Nrs.<Text style={{fontSize: 60}}>110</Text>/litre</Text>
                         </View>
+                    </View>
+
+                    <View style={styles.chartContainer}>
+                        <PureChart data={sampleData} type='line'
+                        height={300}
+                        numberOfYAxisGuideLine={10}
+                        showEvenNumberXaxisLabel={false}
+                        gap={90}/>
                     </View>
                 </ScrollView>
             </View>
@@ -98,6 +130,11 @@ const styles = StyleSheet.create({
     dailyPriceContainer:{
         alignItems: 'center',
         paddingBottom: 16
+    },
+    chartContainer: {
+        marginHorizontal: 16,
+        borderRadius: 3,
+        elevation: 1
     }
 });
 
