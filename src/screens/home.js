@@ -1,17 +1,42 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { StyleSheet, ScrollView, RefreshControl, View, TouchableOpacity, Text } from 'react-native';
 import MyColors from '../config/colors';
 
 class Home extends Component {
     static navigationOptions = {
-        tabBarIcon: <Icon name="home" size={24} color={MyColors.MAIN_TAB_MENU} />
+        title: 'Home',
+        headerStyle: {
+            backgroundColor: `${MyColors.PRIMARY}`
+        },
+        headerTitleStyle: {
+            color: '#FFF',
+            fontWeight: '200'
+        }
     }
+    constructor(props) {
+        super(props);
+        this.state = {
+            refreshing: false
+        }
+    }
+
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+        setTimeout(() => {this.setState({refreshing: false})}, 2000);
+    }
+
     render(){
         return (
-            <View style={styles.mainContainer}>
-                <Text>Home</Text>
-            </View>
+            <ScrollView 
+                style={styles.mainContainer}
+                refreshControl={
+                    <RefreshControl refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh}
+                        />
+                }
+            >
+                
+            </ScrollView>
         );
     }
 }
@@ -19,8 +44,6 @@ class Home extends Component {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
     }
 });
 

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Keyboard, Image } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Keyboard, Image, ToastAndroid } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextField } from 'react-native-material-textfield';
 import AnimateLoadingButton from 'react-native-animate-loading-button';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import axios from 'axios';
 
 class SignUp extends Component {
     constructor(props) {
@@ -19,10 +20,21 @@ class SignUp extends Component {
     _signUp() {
         Keyboard.dismiss();
         this.loadingButton.showLoading(true);
-        // mock
-        setTimeout(() => {
-          this.loadingButton.showLoading(false);
-        }, 1000);
+        axios.post('http://192.168.1.68:3000/users/signup',{
+            full_name: this.state.fullname,
+            email: this.state.email,
+            password: this.state.password
+        })
+        .then(response => {
+            console.log(response);
+            this.loadingButton.showLoading(false);
+            ToastAndroid.show('User successfully registered', ToastAndroid.LONG);
+        })
+        .catch(error => {
+            //console.log(error.response.data);
+            this.loadingButton.showLoading(false);
+            ToastAndroid.show('Registration failed', ToastAndroid.LONG);
+        });
     }
     render(){
         return (

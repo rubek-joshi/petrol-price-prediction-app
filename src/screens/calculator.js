@@ -87,16 +87,26 @@ class Calculator extends Component {
                         <Text>Current Rate: <Text style={{fontWeight: '500'}}>Nrs. {this.state.currentRate}</Text></Text>
                     </View>
 
-                    <Dropdown label='Select method'
-                    data={paymentTypeData}
-                    value={this.state.paymentType}
-                    onChangeText={(value) => this.handleDropDown(value)}/>
+                    <View style={[styles.box, {paddingHorizontal: 16}]}>
+                        <Dropdown label='Select method'
+                        data={paymentTypeData}
+                        value={this.state.paymentType}
+                        onChangeText={(value) => this.handleDropDown(value)}/>
+                        
+                        {this.displayCalcInput()}
+
+                    </View>
                     
-                    {this.displayCalcInput()}
-                    
-                    <Text>Total Amount: </Text>
-                    <View style={{alignItems: 'center'}}>
-                        <Text style={styles.result}>{this.state.totalAmount}</Text>
+                    <View style={[styles.box, styles.totalContainer]}>
+                        <Text style={{padding: 16}}>Total Amount: </Text>
+                        <View style={{
+                                borderBottomColor: '#d9dce0',
+                                borderBottomWidth: StyleSheet.hairlineWidth,
+                            }}
+                        />
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Text style={styles.result}>{this.state.totalAmount}</Text>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -117,7 +127,9 @@ const styles = StyleSheet.create({
     textBox: {
         flex: 1,
         borderWidth: 1,
-        borderColor: '#000'
+        borderRadius: 3,
+        borderColor: '#d9dce0',
+        paddingLeft: 16
     },
     userInputArea: {
         flexDirection: 'row',
@@ -126,7 +138,16 @@ const styles = StyleSheet.create({
     },
     result: {
         fontSize: 50,
-        fontWeight: '500'
+        fontWeight: '400'
+    },
+    box: {
+        borderRadius: 3,
+        backgroundColor: '#FFF',
+        elevation: 1,
+        marginVertical: 8
+    },
+    totalContainer: {
+        height: 200,
     }
 });
 

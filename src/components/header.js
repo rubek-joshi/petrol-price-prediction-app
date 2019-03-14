@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
         height: MyFont.HEADER_HEIGHT,
         backgroundColor: `${MyColors.PRIMARY}`,
         flexDirection: 'row',
+        elevation: 1
     },
     headerText: {
         color: 'white',
