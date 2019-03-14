@@ -91,6 +91,7 @@ class Calculator extends Component {
                         <Dropdown label='Select method'
                         data={paymentTypeData}
                         value={this.state.paymentType}
+                        textColor='#414141'
                         onChangeText={(value) => this.handleDropDown(value)}/>
                         
                         {this.displayCalcInput()}
@@ -100,7 +101,7 @@ class Calculator extends Component {
                     <View style={[styles.box, styles.totalContainer]}>
                         <Text style={{padding: 16}}>Total Amount: </Text>
                         <View style={{
-                                borderBottomColor: '#d9dce0',
+                                borderBottomColor: '#949494',
                                 borderBottomWidth: StyleSheet.hairlineWidth,
                             }}
                         />
