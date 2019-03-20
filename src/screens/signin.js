@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Keyboard, Image } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Keyboard, Image, ToastAndroid } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextField } from 'react-native-material-textfield';
 import AnimateLoadingButton from 'react-native-animate-loading-button';
+import axios from 'axios';
 
 class SignIn extends Component {
     constructor(props) {
@@ -11,19 +12,26 @@ class SignIn extends Component {
             email: '',
             password: ''
         }
-        this.signIn = this.signIn.bind(this);
         this._onPressHandler = this._onPressHandler.bind(this);
-    }
-    signIn(){
-        this.props.navigation.navigate('App');
     }
     _onPressHandler() {
         Keyboard.dismiss();
         this.loadingButton.showLoading(true);
-        // mock
-        setTimeout(() => {
-          this.loadingButton.showLoading(false);
-        }, 1000);
+        axios.post('http://192.168.1.68:3000/api/users/login',{
+            email: this.state.email,
+            password: this.state.password
+        })
+        .then(response => {
+            console.log(response);
+            this.loadingButton.showLoading(false);
+            ToastAndroid.show('Login successful', ToastAndroid.SHORT);
+            this.props.navigation.navigate('App');
+        })
+        .catch(error => {
+            console.log(error.response.data);
+            this.loadingButton.showLoading(false);
+            ToastAndroid.show('Login failed', ToastAndroid.LONG);
+        });
     }
     render(){
         return (

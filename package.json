@@ -19,6 +19,7 @@
     "react-native-material-buttons": "^0.5.0",
     "react-native-material-dropdown": "^0.11.1",
     "react-native-material-textfield": "^0.12.0",
+    "react-native-modal": "^9.0.0",
     "react-native-paper": "^2.13.0",
     "react-native-pure-chart": "^0.0.24",
     "react-native-vector-icons": "^6.4.0",

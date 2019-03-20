@@ -20,7 +20,7 @@ class SignUp extends Component {
     _signUp() {
         Keyboard.dismiss();
         this.loadingButton.showLoading(true);
-        axios.post('http://192.168.1.68:3000/users/signup',{
+        axios.post('http://192.168.1.68:3000/api/users/signup',{
             full_name: this.state.fullname,
             email: this.state.email,
             password: this.state.password
@@ -32,8 +32,21 @@ class SignUp extends Component {
         })
         .catch(error => {
             //console.log(error.response.data);
+            switch(error.response.data.message){
+                case "Invalid Email":
+                    ToastAndroid.show('Please enter a valid email', ToastAndroid.LONG);
+                    break;
+                case "Invalid Name":
+                    ToastAndroid.show('Please enter a valid name', ToastAndroid.LONG);
+                    break;
+                case "Email already exists":
+                    ToastAndroid.show('This email has already been used', ToastAndroid.LONG);
+                    break;
+                default:
+                    ToastAndroid.show('Registration failed', ToastAndroid.LONG);
+                    break;
+            }
             this.loadingButton.showLoading(false);
-            ToastAndroid.show('Registration failed', ToastAndroid.LONG);
         });
     }
     render(){
