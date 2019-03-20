@@ -28,7 +28,7 @@ class Newsfeed extends Component {
                 <View style={styles.newsContainer} key={newsItem.id}>
                     <Text style={styles.newsTitle}>{newsItem.news_title}</Text>
                     <Text style={{paddingBottom: 8}}>Date: {newsItem.date_published}</Text>
-                    
+                    <Image source={{uri: 'http://192.168.1.68:3000/api/news/' + newsItem.image}} style={styles.newsImage}/>
                     <View style={{borderBottomColor: '#949494', borderBottomWidth: StyleSheet.hairlineWidth}}/>
                     <View style={{paddingVertical: 8}}>
                         <Text>
@@ -71,6 +71,10 @@ const styles = StyleSheet.create({
     newsTitle: {
         fontSize: 30,
         fontWeight: '600'
+    },
+    newsImage: {
+        height: 200,
+        width: '100%'
     }
 });
 
