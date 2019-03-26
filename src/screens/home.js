@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, RefreshControl, View, TouchableOpacity, Text} from 'react-native';
+import { StyleSheet, Dimensions, ScrollView, RefreshControl, View, TouchableOpacity, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { View as AnimatableView } from 'react-native-animatable';
 import PureChart from 'react-native-pure-chart';
+import { connect } from 'react-redux';
+import { getRates } from '../actions';
+import axios from 'axios';
+import { ServerIp } from '../config/server';
 import MyColors from '../config/colors';
 
+axios.defaults.baseURL = ServerIp;
 class Home extends Component {
     static navigationOptions = {
         title: 'Home',
@@ -16,6 +21,7 @@ class Home extends Component {
             fontWeight: '200'
         }
     }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -25,11 +31,36 @@ class Home extends Component {
         this._onRefresh = this._onRefresh.bind(this);
     }
 
+    componentDidMount(){
+        axios.get('/api/rates')
+        .then((response) => {
+            this.props.getRates(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
+
     _onRefresh = () => {
         this.setState({refreshing: true, flashLastUpdated: true});
         setTimeout(() => {
             this.setState({refreshing: false, flashLastUpdated: false}); 
         }, 2000);
+    }
+
+    renderMarketRates(){
+        return this.props.rates.latestRates.map((item) => {
+            return (
+                <View style={[styles.box, {width: Dimensions.get('window').width - 32}]} key={item.id}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Text style={{flex: 1, fontWeight: '600'}}>{item.location} Petrol Market Price</Text>
+                    </View>
+                    <View style={styles.dailyPriceContainer}>
+                        <Text style={{fontSize: 30, fontWeight: '400'}}>Nrs.<Text style={{fontSize: 60}}>{item.petrol}</Text>/litre</Text>
+                    </View>
+                </View>
+            );
+        })
     }
 
     render(){
@@ -82,10 +113,16 @@ class Home extends Component {
                                 <Text style={{paddingLeft: 5}}>History</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={styles.dailyPriceContainer}>
-                            <Text style={{fontSize: 30, fontWeight: '400'}}>Nrs.<Text style={{fontSize: 60}}>110</Text>/litre</Text>
-                        </View>
                     </View>
+
+                    <ScrollView 
+                        horizontal={true}
+                        snapToInterval={Dimensions.get('window').width} //your element width
+                        snapToAlignment={'center'}
+                        showsHorizontalScrollIndicator={false}
+                    >
+                        {this.renderMarketRates()}
+                    </ScrollView>
 
                     <View style={styles.chartContainer}>
                         <PureChart data={sampleData} type='line'
@@ -138,4 +175,8 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Home;
+const mapStateToProps = (state) => ({
+    rates: state.rates
+});
+
+export default connect(mapStateToProps, { getRates })(Home);

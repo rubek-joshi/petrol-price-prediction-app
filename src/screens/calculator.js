@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, TextInput } from 'react-native';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
 import MyColors from '../config/colors';
 import Header from '../components/header';
 
@@ -14,7 +15,6 @@ class Calculator extends Component {
         this.state={
             paymentType: 'Litre',
             userInput: '',
-            currentRate: 108,
             totalAmount: 0
         }
         this.displayCalcInput = this.displayCalcInput.bind(this);
@@ -25,7 +25,7 @@ class Calculator extends Component {
     calculateAmount(litreBasis, value){
         this.setState({userInput: value}, () => {
             let userInput = this.state.userInput;
-            const currentRate = this.state.currentRate;
+            const currentRate = this.props.rates.latestRates[0].petrol;
             //handling empty input
             if(!userInput){
                 userInput = '0';
@@ -84,7 +84,19 @@ class Calculator extends Component {
                 <View style={styles.mainContainer}>
                     
                     <View>
-                        <Text>Current Rate: <Text style={{fontWeight: '500'}}>Nrs. {this.state.currentRate}</Text></Text>
+                        <Text>Current Rate: <Text style={{fontWeight: '500'}}>Nrs. {this.props.rates.latestRates[0].petrol}</Text></Text>
+                    </View>
+
+                    <View style={[styles.box, styles.totalContainer]}>
+                        <Text style={{padding: 16}}>Total Amount: </Text>
+                        <View style={{
+                                borderBottomColor: '#949494',
+                                borderBottomWidth: StyleSheet.hairlineWidth,
+                            }}
+                        />
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Text style={styles.result}>{this.state.totalAmount}</Text>
+                        </View>
                     </View>
 
                     <View style={[styles.box, {paddingHorizontal: 16}]}>
@@ -96,18 +108,6 @@ class Calculator extends Component {
                         
                         {this.displayCalcInput()}
 
-                    </View>
-                    
-                    <View style={[styles.box, styles.totalContainer]}>
-                        <Text style={{padding: 16}}>Total Amount: </Text>
-                        <View style={{
-                                borderBottomColor: '#949494',
-                                borderBottomWidth: StyleSheet.hairlineWidth,
-                            }}
-                        />
-                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <Text style={styles.result}>{this.state.totalAmount}</Text>
-                        </View>
                     </View>
                 </View>
             </View>
@@ -152,4 +152,8 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Calculator;
+const mapStateToProps = (state) => ({
+    rates: state.rates
+});
+
+export default connect(mapStateToProps, null)(Calculator);
