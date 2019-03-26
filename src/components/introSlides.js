@@ -1,4 +1,3 @@
-import React from 'react';
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -7,7 +6,7 @@ const styles = StyleSheet.create({
       height: 320
     }
 });
-  
+
 const slides = [
     {
       key: 'slide-i',

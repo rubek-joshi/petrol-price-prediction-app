@@ -85,7 +85,7 @@ class Home extends Component {
                 {x: '2018-02-04', y: 550},
                 {x: '2018-02-05', y: 40}
               ],
-              color: `${MyColors.secondary}`
+              color: '#F60550'
             }
         ]
         return (
