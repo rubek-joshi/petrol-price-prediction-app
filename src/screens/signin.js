@@ -4,7 +4,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import { TextField } from 'react-native-material-textfield';
 import AnimateLoadingButton from 'react-native-animate-loading-button';
 import axios from 'axios';
+import {ServerIp} from '../config/server';
 
+axios.defaults.baseURL = ServerIp;
 class SignIn extends Component {
     constructor(props) {
         super(props);
@@ -17,7 +19,7 @@ class SignIn extends Component {
     _onPressHandler() {
         Keyboard.dismiss();
         this.loadingButton.showLoading(true);
-        axios.post('http://192.168.1.68:3000/api/users/login',{
+        axios.post('/api/users/login', {
             email: this.state.email,
             password: this.state.password
         })
@@ -28,7 +30,6 @@ class SignIn extends Component {
             this.props.navigation.navigate('App');
         })
         .catch(error => {
-            console.log(error.response.data);
             this.loadingButton.showLoading(false);
             ToastAndroid.show('Login failed', ToastAndroid.LONG);
         });

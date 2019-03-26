@@ -5,8 +5,11 @@ import { TextField } from 'react-native-material-textfield';
 import AnimateLoadingButton from 'react-native-animate-loading-button';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
+import {ServerIp} from '../config/server';
 
+axios.defaults.baseURL = ServerIp; //set the default base url
 class SignUp extends Component {
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -20,7 +23,7 @@ class SignUp extends Component {
     _signUp() {
         Keyboard.dismiss();
         this.loadingButton.showLoading(true);
-        axios.post('http://192.168.1.68:3000/api/users/signup',{
+        axios.post('api/users/signup',{
             full_name: this.state.fullname,
             email: this.state.email,
             password: this.state.password
@@ -31,22 +34,26 @@ class SignUp extends Component {
             ToastAndroid.show('User successfully registered', ToastAndroid.LONG);
         })
         .catch(error => {
-            //console.log(error.response.data);
-            switch(error.response.data.message){
-                case "Invalid Email":
-                    ToastAndroid.show('Please enter a valid email', ToastAndroid.LONG);
-                    break;
-                case "Invalid Name":
-                    ToastAndroid.show('Please enter a valid name', ToastAndroid.LONG);
-                    break;
-                case "Email already exists":
-                    ToastAndroid.show('This email has already been used', ToastAndroid.LONG);
-                    break;
-                default:
-                    ToastAndroid.show('Registration failed', ToastAndroid.LONG);
-                    break;
-            }
             this.loadingButton.showLoading(false);
+            console.log(error);
+            if(error.response){
+                switch(error.response.data.message){
+                    case "Invalid Email":
+                        ToastAndroid.show('Please enter a valid email', ToastAndroid.LONG);
+                        break;
+                    case "Invalid Name":
+                        ToastAndroid.show('Please enter a valid name', ToastAndroid.LONG);
+                        break;
+                    case "Email already exists":
+                        ToastAndroid.show('This email has already been used', ToastAndroid.LONG);
+                        break;
+                    default:
+                        ToastAndroid.show('Registration failed', ToastAndroid.LONG);
+                        break;
+                }
+            } else {
+                ToastAndroid.show('Cannot connect to server', ToastAndroid.LONG);
+            }
         });
     }
     render(){
