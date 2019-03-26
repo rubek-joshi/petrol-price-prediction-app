@@ -53,14 +53,14 @@ class History extends Component {
                 }
             }
             return (
-                <View key={item.id} style={[styles.tableContainer, {paddingVertical: 16}]}>
-                    <View style={styles.tableHeaders}>
+                <View key={item.id} style={styles.tableContainer}>
+                    <View style={styles.tableData}>
                         <Text>{item.date_published}</Text>
                     </View>
-                    <View style={styles.tableHeaders}>
+                    <View style={styles.tableData}>
                         <Text>{item.petrol}</Text>
                     </View>
-                    <View style={styles.tableHeaders}>
+                    <View style={styles.tableData}>
                         <Icon name={status} size={24} color={statusColor}/>
                     </View>
                 </View>
@@ -70,7 +70,6 @@ class History extends Component {
     render(){
         return (
             <View style={styles.mainContainer}>
-                <Text>There is currently no history</Text>
                 <View style={styles.tableContainer}>
                     <View style={styles.tableHeaders}>
                         <Text>Date</Text>
@@ -99,7 +98,13 @@ const styles = StyleSheet.create({
     },
     tableHeaders: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingVertical: 8
+    },
+    tableData: {
+        flex: 1,
+        alignItems: 'center',
+        paddingVertical: 16,
     }
 });
 
