@@ -43,9 +43,15 @@ class Home extends Component {
 
     _onRefresh = () => {
         this.setState({refreshing: true, flashLastUpdated: true});
-        setTimeout(() => {
-            this.setState({refreshing: false, flashLastUpdated: false}); 
-        }, 2000);
+        axios.get('/api/rates')
+        .then((response) => {
+            this.setState({refreshing: false, flashLastUpdated: false});
+            this.props.getRates(response.data);
+        })
+        .catch((error) => {
+            this.setState({refreshing: false, flashLastUpdated: false});
+            console.log(error);
+        });
     }
 
     renderMarketRates(){
@@ -102,7 +108,7 @@ class Home extends Component {
                     <AnimatableView animation={this.state.flashLastUpdated ? 'flash' : undefined}
                         style={styles.lastUpdatedBox}
                         easing='linear' useNativeDriver>
-                        <Text>Last updated on: 15/03/2019</Text>
+                        <Text>Last updated on: {new Date().toLocaleDateString()}</Text>
                     </AnimatableView>
 
                     <View style={styles.box}>
