@@ -2,26 +2,8 @@ import React, { Component } from 'react';
 import {StyleSheet, View, PermissionsAndroid, Dimensions} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import axios from 'axios';
+import { GasStationsIp } from '../config/server';
 import MyColors from '../config/colors';
-
-const styles = StyleSheet.create({
-    mainContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-    },
-    map: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-    },
-});
 
 const { width, height } = Dimensions.get('window');
 
@@ -51,7 +33,9 @@ class Map extends Component {
                 latitudeDelta: LATITUDE_DELTA,
                 longitudeDelta: LONGITUDE_DELTA,
             },
+            gas_stations: []
         }
+        this.renderGasStations = this.renderGasStations.bind(this);
     }
     componentDidMount(){
         if (this.props.coordinate) return;
@@ -71,13 +55,42 @@ class Map extends Component {
                 latitudeDelta: LATITUDE_DELTA,
                 longitudeDelta: LONGITUDE_DELTA,
             }
-            this.setState({region: currentRegion});
+            this.setState({region: currentRegion}, () => {
+                axios.get(GasStationsIp + '/json', {
+                    params: {
+                        location: `${this.state.region.latitude},${this.state.region.longitude}`,
+                        radius: 1500,
+                        type: 'gas_station',
+                        key: 'AIzaSyCk1q_C6jgCKHIX-mxWyDtjxms1oUB3b4Y'
+                    }
+                })
+                .then((response) => {
+                    console.log(response.data.results);
+                    this.setState({gas_stations: response.data.results});
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            });
         }, (error) => {
             console.log(error);
         }, {
             enableHighAccuracy: true,
             timeout: 20000,
             maximumAge: 1000
+        });
+    }
+    renderGasStations(){
+        return this.state.gas_stations.map(marker => {
+            return(
+                <Marker key={marker.id}
+                coordinate={{
+                    latitude: marker.geometry.location.lat,
+                    longitude: marker.geometry.location.lng
+                }}
+                title={marker.name}
+                description={marker.vicinity}/>
+            );
         });
     }
     render(){
@@ -91,10 +104,30 @@ class Map extends Component {
                     followsUserLocation={true}
                     loadingEnabled={true}
                     >
+                    {this.renderGasStations()}
                 </MapView>
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    mainContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    map: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    },
+});
 
 export default Map;
