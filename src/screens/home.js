@@ -26,9 +26,13 @@ class Home extends Component {
         super(props);
         this.state = {
             refreshing: false,
-            flashLastUpdated: false
+            flashLastUpdated: false,
+            initialPrediction: null,
+            prediction: []
         }
         this._onRefresh = this._onRefresh.bind(this);
+        this.setupChart = this.setupChart.bind(this);
+        this.renderChart = this.renderChart.bind(this);
     }
 
     componentDidMount(){
@@ -38,7 +42,59 @@ class Home extends Component {
         })
         .catch((error) => {
             console.log(error);
+        });
+
+        axios.get('/api/rates/petrol-prediction')
+        .then((response) => {
+            console.log(response.data);
+            this.setState({prediction: response.data}, () => {
+                this.setupChart();
+            });
         })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    setupChart(){
+        let predictionTemp = [
+            {
+                seriesName: 'Actual Price',
+                data: [],
+                color: `${MyColors.PRIMARY}`
+            },
+            {
+                seriesName: 'Predicted',
+                data: [],
+                color: '#F60550'
+            }
+        ]
+        this.state.prediction.map((item) => {
+            predictionTemp[0].data.push({
+                x: item.date_published,
+                y: item.petrol
+            });
+            predictionTemp[1].data.push({
+                x: item.date_published,
+                y: item.petrol_prediction
+            });
+        });
+        console.log(predictionTemp);
+        this.setState({initialPrediction: predictionTemp});
+    }
+
+    renderChart(){
+        if(this.state.initialPrediction){
+            return (
+                <PureChart data={this.state.initialPrediction} type='line'
+                    height={300}
+                    numberOfYAxisGuideLine={10}
+                    showEvenNumberXaxisLabel={false}
+                    gap={90}/>
+            );
+        } else {
+            return null;
+        }
     }
 
     _onRefresh = () => {
@@ -70,30 +126,6 @@ class Home extends Component {
     }
 
     render(){
-        let sampleData = [
-            {
-              seriesName: 'series1',
-              data: [
-                {x: '2018-02-01', y: 30},
-                {x: '2018-02-02', y: 200},
-                {x: '2018-02-03', y: 170},
-                {x: '2018-02-04', y: 250},
-                {x: '2018-02-05', y: 10}
-              ],
-              color: `${MyColors.PRIMARY}`
-            },
-            {
-              seriesName: 'series2',
-              data: [
-                {x: '2018-02-01', y: 20},
-                {x: '2018-02-02', y: 100},
-                {x: '2018-02-03', y: 140},
-                {x: '2018-02-04', y: 550},
-                {x: '2018-02-05', y: 40}
-              ],
-              color: '#F60550'
-            }
-        ]
         return (
             <View style={styles.mainContainer}>
                 <ScrollView
@@ -131,11 +163,7 @@ class Home extends Component {
                     </ScrollView>
 
                     <View style={styles.chartContainer}>
-                        <PureChart data={sampleData} type='line'
-                        height={300}
-                        numberOfYAxisGuideLine={10}
-                        showEvenNumberXaxisLabel={false}
-                        gap={90}/>
+                        {this.renderChart()}
                     </View>
                 </ScrollView>
             </View>

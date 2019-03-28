@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import MyColors from '../config/colors';
 import Header from '../components/header';
+import Loading from '../components/loadingIndicator';
 
 class Calculator extends Component {
     static navigationOptions = {
@@ -78,40 +79,44 @@ class Calculator extends Component {
     }
 
     render(){
-        return (
-            <View flex={1}>
-                <Header heading='Petrol Calculator'/>
-                <View style={styles.mainContainer}>
-                    
-                    <View>
-                        <Text>Current Rate: <Text style={{fontWeight: '500'}}>Nrs. {this.props.rates.latestRates[0].petrol}</Text></Text>
-                    </View>
-
-                    <View style={[styles.box, styles.totalContainer]}>
-                        <Text style={{padding: 16}}>Total Amount: </Text>
-                        <View style={{
-                                borderBottomColor: '#949494',
-                                borderBottomWidth: StyleSheet.hairlineWidth,
-                            }}
-                        />
-                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <Text style={styles.result}>{this.state.totalAmount}</Text>
+        if(this.props.rates.latestRates[0].petrol){
+            return (
+                <View flex={1}>
+                    <Header heading='Petrol Calculator'/>
+                    <View style={styles.mainContainer}>
+                        
+                        <View>
+                            <Text>Current Rate: <Text style={{fontWeight: '500'}}>Nrs. {this.props.rates.latestRates[0].petrol}</Text></Text>
+                        </View>
+    
+                        <View style={[styles.box, styles.totalContainer]}>
+                            <Text style={{padding: 16}}>Total Amount: </Text>
+                            <View style={{
+                                    borderBottomColor: '#949494',
+                                    borderBottomWidth: StyleSheet.hairlineWidth,
+                                }}
+                            />
+                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                                <Text style={styles.result}>{this.state.totalAmount}</Text>
+                            </View>
+                        </View>
+    
+                        <View style={[styles.box, {paddingHorizontal: 16}]}>
+                            <Dropdown label='Select method'
+                            data={paymentTypeData}
+                            value={this.state.paymentType}
+                            textColor='#414141'
+                            onChangeText={(value) => this.handleDropDown(value)}/>
+                            
+                            {this.displayCalcInput()}
+    
                         </View>
                     </View>
-
-                    <View style={[styles.box, {paddingHorizontal: 16}]}>
-                        <Dropdown label='Select method'
-                        data={paymentTypeData}
-                        value={this.state.paymentType}
-                        textColor='#414141'
-                        onChangeText={(value) => this.handleDropDown(value)}/>
-                        
-                        {this.displayCalcInput()}
-
-                    </View>
                 </View>
-            </View>
-        );
+            );
+        } else {
+            return <Loading load={true}/>;
+        }
     }
 }
 
