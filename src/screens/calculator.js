@@ -79,7 +79,7 @@ class Calculator extends Component {
     }
 
     render(){
-        if(this.props.rates.latestRates[0].petrol){
+        if(!this.props.rates.latestRates.length == 0){
             return (
                 <View flex={1}>
                     <Header heading='Petrol Calculator'/>

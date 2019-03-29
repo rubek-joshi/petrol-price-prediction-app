@@ -90,7 +90,7 @@ class Home extends Component {
                     height={300}
                     numberOfYAxisGuideLine={10}
                     showEvenNumberXaxisLabel={false}
-                    gap={90}/>
+                    gap={100}/>
             );
         } else {
             return null;

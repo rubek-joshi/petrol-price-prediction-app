@@ -23,7 +23,7 @@ class SignUp extends Component {
     _signUp() {
         Keyboard.dismiss();
         this.loadingButton.showLoading(true);
-        axios.post('api/users/signup',{
+        axios.post('/api/users/signup',{
             full_name: this.state.fullname,
             email: this.state.email,
             password: this.state.password
