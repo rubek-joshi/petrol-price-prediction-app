@@ -57,13 +57,16 @@ class Information extends Component {
         })
         .catch((error) => {
             console.log(error);
+            this.setState({isModalVisible: false});
+            alert('Cannot send feedback. Please check your connection.');
         });
     }
 
     feedbackModal(){
         return (
             <Modal isVisible={this.state.isModalVisible} style={styles.modal}
-            onBackdropPress={() => this.setState({isModalVisible: false})}>
+            onBackdropPress={() => this.setState({isModalVisible: false})}
+            onBackButtonPress={() => this.setState({isModalVisible: false})}>
                 <View style={styles.modalContent}>
                     <View style={styles.modalHeader}>
                         <Text style={{color: '#fff'}}>Give us feedback to improve the app or just show your appreciation</Text>
