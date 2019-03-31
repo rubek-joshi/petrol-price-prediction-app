@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
+import {connect} from 'react-redux';
 import axios from 'axios';
 import {ServerIp} from '../config/server';
+import {getHistory} from '../actions';
 import MyColors from '../config/colors';
 
 axios.defaults.baseURL = ServerIp;
@@ -20,25 +22,22 @@ class History extends Component {
     }
     constructor(props) {
         super(props);
-        this.state = {
-            history: []
-        }
         this.renderHistory = this.renderHistory.bind(this);
     }
     componentDidMount(){
         axios.get('/api/rates/history')
         .then((response) => {
             console.log(response.data);
-            this.setState({history: response.data})
+            this.props.getHistory(response.data);
         })
         .catch((error) => {
             console.log(error);
         });
     }
     renderHistory(){
-        return this.state.history.map((item, index, array) => {
+        return this.props.rates.history.map((item, index, array) => {
             let status = 'dot-single';
-            let statusColor = '#fff'
+            let statusColor = '#fff';
             if(!(index == array.length - 1)){
                 const nextItem = array[index + 1];
                 if(nextItem.petrol > item.petrol){
@@ -108,4 +107,8 @@ const styles = StyleSheet.create({
     }
 });
 
-export default History;
+const mapStateToProps = (state) => ({
+    rates: state.rates
+});
+
+export default connect(mapStateToProps, {getHistory})(History);

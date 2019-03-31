@@ -1,7 +1,8 @@
-import {GET_RATES} from '../actions';
+import {GET_RATES, GET_HISTORY} from '../actions';
 
 const initialState = {
-    latestRates: []
+    latestRates: [],
+    history: []
 }
 
 export default (state = initialState, action) => {
@@ -11,6 +12,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 latestRates: action.payload
+            }
+        case GET_HISTORY:
+            return {
+                ...state,
+                history: action.payload
             }
         default:
             return state;
