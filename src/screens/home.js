@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, ScrollView, RefreshControl, View, TouchableOpacity, Text} from 'react-native';
+import { StyleSheet, Dimensions, AsyncStorage, ScrollView, RefreshControl, View, TouchableOpacity, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { View as AnimatableView } from 'react-native-animatable';
 import PureChart from 'react-native-pure-chart';
 import { connect } from 'react-redux';
-import { getRates } from '../actions';
 import axios from 'axios';
+import { getRates } from '../actions';
 import { ServerIp } from '../config/server';
 import MyColors from '../config/colors';
 
@@ -28,7 +28,8 @@ class Home extends Component {
             refreshing: false,
             flashLastUpdated: false,
             initialPrediction: null,
-            prediction: []
+            prediction: [],
+            lastUpdated: 'n/a'
         }
         this._onRefresh = this._onRefresh.bind(this);
         this.setupChart = this.setupChart.bind(this);
@@ -53,6 +54,13 @@ class Home extends Component {
         })
         .catch((error) => {
             console.log(error);
+        });
+
+        AsyncStorage.getItem('lastUpdated', (err, value) => {
+            if(err) throw err;
+            if(value !== null) {
+                this.setState({lastUpdated: value});
+            }
         });
     }
 
@@ -102,6 +110,7 @@ class Home extends Component {
         axios.get('/api/rates')
         .then((response) => {
             this.setState({refreshing: false, flashLastUpdated: false});
+            this._updateLastUpdated();
             this.props.getRates(response.data);
         })
         .catch((error) => {
@@ -125,6 +134,15 @@ class Home extends Component {
         })
     }
 
+    // updates the last updated date with current date
+    _updateLastUpdated = async () => {
+        try {
+            await AsyncStorage.mergeItem('lastUpdated', (new Date().toLocaleDateString()));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     render(){
         return (
             <View style={styles.mainContainer}>
@@ -140,7 +158,7 @@ class Home extends Component {
                     <AnimatableView animation={this.state.flashLastUpdated ? 'flash' : undefined}
                         style={styles.lastUpdatedBox}
                         easing='linear' useNativeDriver>
-                        <Text>Last updated on: {new Date().toLocaleDateString()}</Text>
+                        <Text>Last updated on: {this.state.lastUpdated}</Text>
                     </AnimatableView>
 
                     <View style={styles.box}>

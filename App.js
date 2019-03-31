@@ -28,11 +28,13 @@ export default class App extends Component {
       console.log('Already used', value);
       if(value === null) {
         AsyncStorage.setItem('alreadyUsed', 'true');
+        AsyncStorage.setItem('lastUpdated', (new Date().toLocaleDateString()));
         this.setState({isLoading: false});
       } else {
+        console.log(AsyncStorage.getItem('lastUpdated'));
         this.setState({showRealApp: true, isLoading: false});
       }
-    })
+    });
   }
 
   render() {

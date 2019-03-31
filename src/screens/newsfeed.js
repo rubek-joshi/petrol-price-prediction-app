@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, TouchableNativeFeedback } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, TouchableNativeFeedback, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import Modal from "react-native-modal";
 import axios from 'axios';
 import MyColors from '../config/colors';
 import Header from '../components/header';
@@ -17,7 +19,9 @@ class Newsfeed extends Component {
         super(props);
         this.state = {
             isLoading: true,
-            news: null
+            news: null,
+            newsIndex: 0,
+            isModalVisible: false
         }
         axios.get('/api/news')
         .then(response => {
@@ -29,6 +33,7 @@ class Newsfeed extends Component {
             this.setState({isLoading: false})
         });
         this.renderNews = this.renderNews.bind(this);
+        this.displayModal = this.displayModal.bind(this);
         this.handleTryAgain = this.handleTryAgain.bind(this);
     }
 
@@ -45,11 +50,41 @@ class Newsfeed extends Component {
         });
     }
 
+    displayModal(){
+        const news = this.state.news[this.state.newsIndex]
+        return (
+            <Modal isVisible={this.state.isModalVisible}
+                style={{margin: 0}}
+                animationIn='zoomIn'
+                animationOut='zoomOut'
+                animationInTiming={400}
+                animationOutTiming={600}
+                onBackButtonPress={() => this.setState({isModalVisible: false})}
+                propagateSwipe
+            >
+                <ScrollView contentContainerStyle={{flex: 1, backgroundColor: '#fff'}}>
+                    <Image source={{uri: ServerIp + '/api/news/' + news.image}} style={styles.modalImage}/>
+                    <View style={{flex: 1, padding: 16}}>
+                        <Text style={{fontWeight: '500'}}>{news.date_published}</Text>
+                        <Text style={{fontWeight: '600', fontSize: 40, color: '#000', opacity: 0.87}}>{news.news_title}</Text>
+                        <Text>{news.news_body}</Text>
+                        <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
+                            <Text onPress={() => Linking.openURL(news.source)}>Go to source!</Text>
+                        </View>
+                    </View>
+                    <TouchableOpacity style={styles.backButton} onPress={() => this.setState({isModalVisible: false})}>
+                        <MaterialIcon name='arrow-back' size={30} color='#fff'/>
+                    </TouchableOpacity>
+                </ScrollView>
+            </Modal>
+        );
+    }
+
     renderNews(){
-        return this.state.news.map((newsItem) => {
+        return this.state.news.map((newsItem, index) => {
             return (
                 <View style={styles.newsContainer} key={newsItem.id}>
-                    <TouchableNativeFeedback style={styles.newsContainer}>
+                    <TouchableNativeFeedback style={styles.newsContainer} onPress={() => this.setState({isModalVisible: true, newsIndex: index})}>
                         <View style={{paddingHorizontal: 16}}>
                             <Text style={styles.newsTitle}>{newsItem.news_title}</Text>
                             <Text style={{paddingBottom: 8}}>Date: {newsItem.date_published}</Text>
@@ -74,6 +109,7 @@ class Newsfeed extends Component {
                         <Header heading='Newsfeed'/>
                         <ScrollView>
                             { this.renderNews() }
+                            { this.displayModal() }
                         </ScrollView>
                     </View>
                 );
@@ -120,6 +156,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 3,
         elevation: 1
+    },
+    modalImage: {
+        height: 300
+    },
+    backButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 16,
+        left: 16
     }
 });
 
