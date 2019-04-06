@@ -6,6 +6,7 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 // Import all the reducers created for each part of the store
 import authReducer from './auth';
 import ratesReducer from './rates';
+import termsReducer from './terms';
 
 const persistConfig = {
     key: 'root',
@@ -17,7 +18,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
     // fieldInStore: Reducer
     auth: authReducer,
-    rates: ratesReducer
+    rates: ratesReducer,
+    terms: termsReducer
 });
 
 export default persistReducer(persistConfig, rootReducer);

@@ -23,6 +23,7 @@
     "react-native-modal": "^9.0.0",
     "react-native-paper": "^2.13.0",
     "react-native-pure-chart": "^0.0.24",
+    "react-native-render-html": "^4.1.2",
     "react-native-textarea": "^1.0.3",
     "react-native-vector-icons": "^6.4.0",
     "react-navigation": "^3.3.2",
