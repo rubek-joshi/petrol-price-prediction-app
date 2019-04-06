@@ -1,8 +1,9 @@
-import {GET_RATES, GET_HISTORY} from '../actions';
+import {GET_RATES, GET_HISTORY, GET_PREDICTION} from '../actions';
 
 const initialState = {
     latestRates: [],
-    history: []
+    history: [],
+    prediction: []
 }
 
 export default (state = initialState, action) => {
@@ -17,6 +18,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 history: action.payload
+            }
+        case GET_PREDICTION:
+            return {
+                ...state,
+                prediction: action.payload
             }
         default:
             return state;

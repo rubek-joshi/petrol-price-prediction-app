@@ -5,7 +5,7 @@ import { View as AnimatableView } from 'react-native-animatable';
 import PureChart from 'react-native-pure-chart';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { getRates } from '../actions';
+import { getRates, getPrediction } from '../actions';
 import { ServerIp } from '../config/server';
 import MyColors from '../config/colors';
 
@@ -28,12 +28,12 @@ class Home extends Component {
             refreshing: false,
             flashLastUpdated: false,
             initialPrediction: null,
-            prediction: [],
             lastUpdated: 'n/a'
         }
         this._onRefresh = this._onRefresh.bind(this);
         this.setupChart = this.setupChart.bind(this);
         this.renderChart = this.renderChart.bind(this);
+        this.getPrediction = this.getPrediction.bind(this);
     }
 
     componentDidMount(){
@@ -45,22 +45,26 @@ class Home extends Component {
             console.log(error);
         });
 
-        axios.get('/api/rates/petrol-prediction')
-        .then((response) => {
-            console.log(response.data);
-            this.setState({prediction: response.data}, () => {
-                this.setupChart();
-            });
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        this.getPrediction();
 
         AsyncStorage.getItem('lastUpdated', (err, value) => {
             if(err) throw err;
             if(value !== null) {
                 this.setState({lastUpdated: value});
             }
+        });
+    }
+
+    getPrediction(){
+        axios.get('/api/rates/petrol-prediction')
+        .then((response) => {
+            console.log(response.data);
+            this.props.getPrediction(response.data);
+            this.setupChart();
+            this.setState({refreshing: false, flashLastUpdated: false});
+        })
+        .catch((error) => {
+            console.log(error);
         });
     }
 
@@ -77,7 +81,7 @@ class Home extends Component {
                 color: '#F60550'
             }
         ]
-        this.state.prediction.map((item) => {
+        this.props.rates.prediction.map((item) => {
             predictionTemp[0].data.push({
                 x: item.date_published,
                 y: item.petrol
@@ -94,11 +98,39 @@ class Home extends Component {
     renderChart(){
         if(this.state.initialPrediction){
             return (
-                <PureChart data={this.state.initialPrediction} type='line'
-                    height={300}
-                    numberOfYAxisGuideLine={10}
-                    showEvenNumberXaxisLabel={false}
-                    gap={100}/>
+                <View style={{backgroundColor: '#fff'}}>
+                    <View style={styles.legendContainer}>
+                        <Text style={{fontWeight: 'bold'}}>Legend:</Text>
+                        <View style={styles.legendItem}>
+                            <View style={[styles.legendCircle, styles.actual]} />
+                            <Text style={styles.legendText}>Actual Price</Text>
+                        </View>
+
+                        <View style={styles.legendItem}>
+                            <View style={[styles.legendCircle, styles.predicted]} />
+                            <Text style={styles.legendText}>Predicted Price</Text>
+                        </View>
+                    </View>
+                    
+                    <View style={{flexDirection: 'row'}}>
+                        <View style={{flexDirection: 'row', width: 15}}>
+                            <Text style={styles.yAxisLabel}>Petrol Price (in NRs.)</Text>
+                        </View>
+                        <View style={{flex: 1}}>
+                            <PureChart data={this.state.initialPrediction} type='line'
+                                height={300}
+                                numberOfYAxisGuideLine={10}
+                                showEvenNumberXaxisLabel={false}
+                                gap={100}
+                                selectedColor={'#0073EF'}
+                                />
+                        </View>
+                    </View>
+                    <View style={{alignItems: 'center'}}>
+                        <Text>Date</Text>
+                    </View>
+                    
+                </View>
             );
         } else {
             return null;
@@ -109,7 +141,7 @@ class Home extends Component {
         this.setState({refreshing: true, flashLastUpdated: true});
         axios.get('/api/rates')
         .then((response) => {
-            this.setState({refreshing: false, flashLastUpdated: false});
+            this.getPrediction();
             this._updateLastUpdated();
             this.props.getRates(response.data);
         })
@@ -123,7 +155,7 @@ class Home extends Component {
         return this.props.rates.latestRates.map((item) => {
             return (
                 <View style={[styles.box, {width: Dimensions.get('window').width - 32}]} key={item.id}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 16}}>
                         <Text style={{flex: 1, fontWeight: '600'}}>{item.location} Petrol Market Price</Text>
                     </View>
                     <View style={styles.dailyPriceContainer}>
@@ -224,6 +256,38 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
         borderRadius: 3,
         elevation: 1
+    },
+    legendContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        paddingTop: 20,
+        paddingBottom: 20,
+        backgroundColor: "white",
+        elevation: 1
+    },
+    legendCircle: {
+        height: 10,
+        width: 10,
+        borderRadius: 5,
+        marginRight: 5,
+        alignSelf: 'center'
+    },
+    legendItem: {
+        flexDirection: "row"
+    },
+    legendText: {
+        fontSize: 16
+    },
+    actual: {
+        backgroundColor: `${MyColors.PRIMARY}`
+    },
+    predicted: {
+        backgroundColor: '#F60550'
+    },
+    yAxisLabel: {
+        width: 140,
+        alignSelf: 'center',
+        transform: [{rotate: '-90deg'}, {translateY: -63}]
     }
 });
 
@@ -231,4 +295,4 @@ const mapStateToProps = (state) => ({
     rates: state.rates
 });
 
-export default connect(mapStateToProps, { getRates })(Home);
+export default connect(mapStateToProps, { getRates, getPrediction })(Home);
