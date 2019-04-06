@@ -63,7 +63,7 @@ class SignUp extends Component {
                     <Icon name="arrow-back" size={30} color="#FFF" />
                 </TouchableOpacity>
                 <View style={styles.logoContainer}>
-                    <Image source={require('../assets/logo.png')} style={{height: 180, width: 130}}/>
+                    <Image source={require('../assets/logo.png')} style={{height: 220, width: 130}} resizeMode='contain'/>
                 </View>
                 <View style={{flex: 1,}}>
                     <View style={{marginBottom: 20}}>

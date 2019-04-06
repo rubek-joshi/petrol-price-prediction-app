@@ -39,7 +39,7 @@ class SignIn extends Component {
             <LinearGradient colors={['#44A59B', '#15DBA5']} style={styles.mainContainer}>
                 <View style={{flex: 1, justifyContent: 'center'}}>
                     <View style={styles.logoContainer}>
-                        <Image source={require('../assets/logo.png')}/>
+                        <Image source={require('../assets/logo.png')} style={{height: 200, width: 200}} resizeMode='contain'/>
                     </View>
                     <View style={{marginBottom: 20}}>
                         <TextField
