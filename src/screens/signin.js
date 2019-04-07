@@ -6,10 +6,10 @@ import AnimateLoadingButton from 'react-native-animate-loading-button';
 import axios from 'axios';
 import {ServerIp} from '../config/server';
 
-axios.defaults.baseURL = ServerIp;
 class SignIn extends Component {
     constructor(props) {
         super(props);
+        axios.defaults.baseURL = ServerIp;
         this.state = {
             email: '',
             password: ''
@@ -41,7 +41,7 @@ class SignIn extends Component {
                     <View style={styles.logoContainer}>
                         <Image source={require('../assets/logo.png')} style={{height: 200, width: 200}} resizeMode='contain'/>
                     </View>
-                    <View style={{marginBottom: 20}}>
+                    <View style={{marginBottom: 50}}>
                         <TextField
                             textColor={'#FFF'}
                             baseColor={'#FFF'}
@@ -49,6 +49,7 @@ class SignIn extends Component {
                             label='Email'
                             value={this.state.email}
                             onChangeText={(email) => this.setState({email: email})}
+                            autoCapitalize='none'
                             returnKeyType={"next"}
                             onSubmitEditing={() => this.passwordTextInput.focus()}
                             blurOnSubmit={false}
@@ -61,6 +62,7 @@ class SignIn extends Component {
                             label='Password'
                             value={this.state.password}
                             onChangeText={(password) => this.setState({password: password})}
+                            autoCapitalize='none'
                             ref={(input) => {this.passwordTextInput = input;}}
                             returnKeyType={"next"}
                             onSubmitEditing={() => this._onPressHandler()}
