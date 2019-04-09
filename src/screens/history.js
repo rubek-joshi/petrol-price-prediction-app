@@ -7,7 +7,6 @@ import {ServerIp} from '../config/server';
 import {getHistory} from '../actions';
 import MyColors from '../config/colors';
 
-axios.defaults.baseURL = ServerIp;
 class History extends Component {
     static navigationOptions = {
         title: 'History',
@@ -22,6 +21,7 @@ class History extends Component {
     }
     constructor(props) {
         super(props);
+        axios.defaults.baseURL = ServerIp;
         this.renderHistory = this.renderHistory.bind(this);
     }
     componentDidMount(){

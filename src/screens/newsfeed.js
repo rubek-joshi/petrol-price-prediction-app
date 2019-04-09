@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, TouchableNativeFeedback, Linking } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, TouchableNativeFeedback, Linking, RefreshControl } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import Modal from "react-native-modal";
+import Modal from "react-native-modal.1"; //scrollview added
 import axios from 'axios';
 import MyColors from '../config/colors';
 import Header from '../components/header';
 import Loading from '../components/loadingIndicator';
 import {ServerIp} from '../config/server';
-
-axios.defaults.baseURL = ServerIp;
 
 class Newsfeed extends Component {
     static navigationOptions = {
@@ -17,11 +15,13 @@ class Newsfeed extends Component {
     }
     constructor(props) {
         super(props);
+        axios.defaults.baseURL = ServerIp;
         this.state = {
             isLoading: true,
             news: null,
             newsIndex: 0,
-            isModalVisible: false
+            isModalVisible: false,
+            isRefreshing: false
         }
         axios.get('/api/news')
         .then(response => {
@@ -60,9 +60,8 @@ class Newsfeed extends Component {
                 animationInTiming={400}
                 animationOutTiming={600}
                 onBackButtonPress={() => this.setState({isModalVisible: false})}
-                propagateSwipe
             >
-                <ScrollView contentContainerStyle={{flex: 1, backgroundColor: '#fff'}}>
+                <View style={{flex: 1, backgroundColor: '#fff'}}>
                     <Image source={{uri: ServerIp + '/api/news/' + news.image}} style={styles.modalImage}/>
                     <View style={{flex: 1, padding: 16}}>
                         <Text style={{fontWeight: '500'}}>{news.date_published}</Text>
@@ -75,7 +74,7 @@ class Newsfeed extends Component {
                     <TouchableOpacity style={styles.backButton} onPress={() => this.setState({isModalVisible: false})}>
                         <MaterialIcon name='arrow-back' size={30} color='#fff'/>
                     </TouchableOpacity>
-                </ScrollView>
+                </View>
             </Modal>
         );
     }
@@ -92,7 +91,7 @@ class Newsfeed extends Component {
                             <View style={{borderBottomColor: '#949494', borderBottomWidth: StyleSheet.hairlineWidth}}/>
                             <View style={{paddingVertical: 8}}>
                                 <Text>
-                                    {newsItem.news_body}
+                                    {newsItem.news_body.substr(0, 150)}...
                                 </Text>
                             </View>
                         </View>
@@ -101,16 +100,27 @@ class Newsfeed extends Component {
             );
         });
     }
+
+    _onRefresh = () => {
+        this.handleTryAgain();
+    }
+
     render(){
         if(!this.state.isLoading){
             if(this.state.news){
                 return (
                     <View style={styles.mainContainer}>
                         <Header heading='Newsfeed'/>
-                        <ScrollView>
+                        <ScrollView
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.isRefreshing}
+                                    onRefresh={this._onRefresh}
+                                />
+                            }>
                             { this.renderNews() }
-                            { this.displayModal() }
                         </ScrollView>
+                        { this.displayModal() }
                     </View>
                 );
             } else {

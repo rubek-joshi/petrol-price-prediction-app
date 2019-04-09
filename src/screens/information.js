@@ -9,7 +9,6 @@ import IntroSlides from '../components/introSlides';
 import {ServerIp} from '../config/server';
 import MyColors from '../config/colors';
 
-axios.defaults.baseURL = ServerIp;
 class Information extends Component {
     static navigationOptions = {
         title: 'Information',
@@ -23,6 +22,7 @@ class Information extends Component {
     }
     constructor(props) {
         super(props);
+        axios.defaults.baseURL = ServerIp;
         this.state = {
             showIntro: false,
             isModalVisible: false,
@@ -106,8 +106,8 @@ class Information extends Component {
             return (
                 <ScrollView style={styles.mainContainer}>
                     <View style={styles.option}>
-                        <TouchableOpacity onPress={() => this.setState({showIntro: true})}>
-                            <Text>About App</Text>
+                        <TouchableOpacity onPress={() => this._toggleModal()}>
+                            <Text>Learn More</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.option}>
@@ -116,8 +116,23 @@ class Information extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.option}>
+                        <TouchableOpacity onPress={() => this.setState({showIntro: true})}>
+                            <Text>About App</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.option}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('TermsConditions')}>
+                            <Text>Terms and Conditions</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.option}>
                         <TouchableOpacity onPress={() => this._toggleModal()}>
                             <Text>Send Feedback</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.option}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Auth')}>
+                            <Text>Log Out</Text>
                         </TouchableOpacity>
                     </View>
                     {this.feedbackModal()}
@@ -144,7 +159,9 @@ const styles = StyleSheet.create({
     },
     modalHeader:{
         backgroundColor: `${MyColors.PRIMARY}`,
-        padding: 8
+        padding: 8,
+        borderTopLeftRadius: 4,
+        borderTopRightRadius: 4
     },
     modalBody: {
         flex: 1,

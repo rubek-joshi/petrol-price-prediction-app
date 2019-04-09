@@ -9,7 +9,6 @@ import { getRates, getPrediction } from '../actions';
 import { ServerIp } from '../config/server';
 import MyColors from '../config/colors';
 
-axios.defaults.baseURL = ServerIp;
 class Home extends Component {
     static navigationOptions = {
         title: 'Home',
@@ -24,6 +23,7 @@ class Home extends Component {
 
     constructor(props) {
         super(props);
+        axios.defaults.baseURL = ServerIp;
         this.state = {
             refreshing: false,
             flashLastUpdated: false,
