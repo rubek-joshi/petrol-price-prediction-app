@@ -105,36 +105,24 @@ class Information extends Component {
         } else {
             return (
                 <ScrollView style={styles.mainContainer}>
-                    <View style={styles.option}>
-                        <TouchableOpacity onPress={() => this._toggleModal()}>
-                            <Text>Learn More</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.option}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('PetrolPumpMap')}>
-                            <Text>Find Petrol Stations</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.option}>
-                        <TouchableOpacity onPress={() => this.setState({showIntro: true})}>
-                            <Text>About App</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.option}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('TermsConditions')}>
-                            <Text>Terms and Conditions</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.option}>
-                        <TouchableOpacity onPress={() => this._toggleModal()}>
-                            <Text>Send Feedback</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.option}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Auth')}>
-                            <Text>Log Out</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity style={styles.option} onPress={() => this._toggleModal()}>
+                        <Text>Learn More</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.option} onPress={() => this.props.navigation.navigate('PetrolPumpMap')}>
+                        <Text>Find Petrol Stations</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.option} onPress={() => this.setState({showIntro: true})}>
+                        <Text>About App</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.option} onPress={() => this.props.navigation.navigate('TermsConditions')}>
+                        <Text>Terms and Conditions</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.option} onPress={() => this._toggleModal()}>
+                        <Text>Send Feedback</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.option} onPress={() => this.props.navigation.navigate('Auth')}>
+                        <Text>Log Out</Text>
+                    </TouchableOpacity>
                     {this.feedbackModal()}
                 </ScrollView>
             );
