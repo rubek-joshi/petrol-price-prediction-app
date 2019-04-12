@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TextInput } from 'react-native';
 import { Dropdown } from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -23,15 +23,15 @@ class Calculator extends Component {
         this.handleDropDown = this.handleDropDown.bind(this);
     }
 
-    calculateAmount(litreBasis, value){
-        this.setState({userInput: value}, () => {
+    calculateAmount(litreBasis, value) {
+        this.setState({userInput: value.replace(/[^0-9]/g, '')}, () => {
             let userInput = this.state.userInput;
             const currentRate = this.props.rates.latestRates[0].petrol;
             //handling empty input
-            if(!userInput){
+            if(!userInput) {
                 userInput = '0';
             }
-            if(litreBasis){
+            if(litreBasis) {
                 const calculated = currentRate * parseInt(userInput, 10);
                 this.setState({totalAmount: calculated});
             } else {
@@ -49,7 +49,8 @@ class Calculator extends Component {
                     onChangeText={(value) => this.calculateAmount(true, value)}
                     style={styles.textBox}
                     keyboardType='numeric'
-                    placeholder='Enter value'/>
+                    placeholder='Enter value'
+                    maxLength={3}/>
                     <Text style={{marginLeft: 16}}>litre(s)</Text>
                 </View>
             );
@@ -61,7 +62,8 @@ class Calculator extends Component {
                     onChangeText={(value) => this.calculateAmount(false, value)}
                     style={styles.textBox}
                     keyboardType='numeric'
-                    placeholder='Enter value'/>
+                    placeholder='Enter value'
+                    maxLength={7}/>
                 </View>
             );
         }
