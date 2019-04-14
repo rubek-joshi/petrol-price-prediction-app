@@ -3,11 +3,15 @@ import { StyleSheet, Dimensions, AsyncStorage, ScrollView, RefreshControl, View,
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { View as AnimatableView } from 'react-native-animatable';
 import PureChart from 'react-native-pure-chart';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
+import Icon2 from 'react-native-vector-icons/Entypo';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import axios from 'axios';
 import { getRates, getPrediction } from '../actions';
 import { ServerIp } from '../config/server';
 import MyColors from '../config/colors';
+import { sliderWidth, itemWidth } from '../config/carousel';
 
 class Home extends Component {
     static navigationOptions = {
@@ -28,7 +32,8 @@ class Home extends Component {
             refreshing: false,
             flashLastUpdated: false,
             initialPrediction: null,
-            lastUpdated: 'n/a'
+            lastUpdated: 'n/a',
+            activeSlide: 0
         }
         this._onRefresh = this._onRefresh.bind(this);
         this.setupChart = this.setupChart.bind(this);
@@ -47,12 +52,7 @@ class Home extends Component {
 
         this.getPrediction();
 
-        AsyncStorage.getItem('lastUpdated', (err, value) => {
-            if(err) throw err;
-            if(value !== null) {
-                this.setState({lastUpdated: value});
-            }
-        });
+        this._getLastUpdated();
     }
 
     getPrediction(){
@@ -151,19 +151,33 @@ class Home extends Component {
         });
     }
 
-    renderMarketRates(){
-        return this.props.rates.latestRates.map((item) => {
-            return (
-                <View style={[styles.box, {width: Dimensions.get('window').width - 32}]} key={item.id}>
-                    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 16}}>
-                        <Text style={{flex: 1, fontWeight: '600'}}>{item.location} Petrol Market Price</Text>
-                    </View>
-                    <View style={styles.dailyPriceContainer}>
-                        <Text style={{fontSize: 30, fontWeight: '400'}}>Nrs.<Text style={{fontSize: 60}}>{item.petrol}</Text>/litre</Text>
-                    </View>
+    _renderItem({item, index}){
+        return (
+            <View style={styles.box}>
+                <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 16}}>
+                    <Icon2 name='location-pin' size={24} color={MyColors.PRIMARY}/>
+                    <Text style={{flex: 1, fontSize: 24, fontWeight: '600'}}>{item.location}</Text>
                 </View>
-            );
-        })
+                <View style={styles.dailyPriceContainer}>
+                    <Text style={{fontSize: 30, fontWeight: '300'}}>NRs.<Text style={{fontSize: 70}}>{item.petrol}</Text>/litre</Text>
+                </View>
+                <View style={styles.datePublishedContainer}>
+                    <Text style={{flex: 1}}>Date Published: </Text>
+                    <Text style={{fontWeight: 'bold'}}>{item.date_published}</Text>
+                </View>
+            </View>
+        );
+    }
+
+
+    //get last updated date
+    _getLastUpdated = () => {
+        AsyncStorage.getItem('lastUpdated', (err, value) => {
+            if(err) throw err;
+            if(value !== null) {
+                this.setState({lastUpdated: value});
+            }
+        });
     }
 
     // updates the last updated date with current date
@@ -172,12 +186,23 @@ class Home extends Component {
             await AsyncStorage.mergeItem('lastUpdated', (new Date().toLocaleDateString()));
         } catch (error) {
             console.log(error);
+        } finally {
+            this._getLastUpdated();
         }
     }
 
     render(){
         return (
             <View style={styles.mainContainer}>
+                <AnimatableView animation={this.state.flashLastUpdated ? 'flash' : undefined}
+                    style={styles.lastUpdatedBox}
+                    easing='linear' useNativeDriver>
+                    <View style={{flexDirection: 'row', paddingHorizontal: 8}}>
+                        <Text style={{flex: 1}}>Last updated on: </Text>
+                        <Text style={{fontWeight: 'bold'}}>{ moment(this.state.lastUpdated).format('Do MMMM, YYYY (dddd)')}</Text>
+                    </View>
+                </AnimatableView>
+                
                 <ScrollView
                     refreshControl={
                         <RefreshControl
@@ -186,14 +211,7 @@ class Home extends Component {
                         />
                     }
                 >
-                    
-                    <AnimatableView animation={this.state.flashLastUpdated ? 'flash' : undefined}
-                        style={styles.lastUpdatedBox}
-                        easing='linear' useNativeDriver>
-                        <Text>Last updated on: {this.state.lastUpdated}</Text>
-                    </AnimatableView>
-
-                    <View style={styles.box}>
+                    <View style={styles.marketPriceTitle}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <Text style={{flex: 1, fontWeight: '600'}}>Petrol Market Price</Text>
                             <TouchableOpacity style={styles.historyButton} onPress={() => this.props.navigation.navigate('History')}>
@@ -203,14 +221,25 @@ class Home extends Component {
                         </View>
                     </View>
 
-                    <ScrollView 
-                        horizontal={true}
-                        snapToInterval={Dimensions.get('window').width} //your element width
-                        snapToAlignment={'center'}
-                        showsHorizontalScrollIndicator={false}
-                    >
-                        {this.renderMarketRates()}
-                    </ScrollView>
+                    <Carousel
+                        ref={(c) => { this._carousel = c; }}
+                        data={this.props.rates.latestRates}
+                        renderItem={this._renderItem}
+                        //layout='tinder'
+                        sliderWidth={sliderWidth}
+                        itemWidth={itemWidth}
+                        autoplay={true}
+                        autoplayDelay={3000}
+                        onSnapToItem={(index) => this.setState({activeSlide: index})}
+                        loop
+                    />
+
+                    <Pagination
+                        dotsLength={this.props.rates.latestRates.length}
+                        activeDotIndex={this.state.activeSlide}
+                        carouselRef={this._carousel}
+                        containerStyle={{ paddingTop: 4 }}
+                    />
 
                     <View style={styles.chartContainer}>
                         {this.renderChart()}
@@ -225,6 +254,14 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         backgroundColor: '#F6F6F6'
+    },
+    marketPriceTitle: {
+        borderRadius: 3,
+        backgroundColor: '#FFF',
+        elevation: 1,
+        marginHorizontal: 16,
+        paddingHorizontal: 16,
+        marginTop: 16
     },
     box: {
         borderRadius: 3,
@@ -252,8 +289,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingBottom: 16
     },
+    datePublishedContainer: {
+        paddingBottom: 8,
+        flex: 1,
+        flexDirection: 'row'
+    },
     chartContainer: {
         marginHorizontal: 16,
+        marginBottom: 16,
         borderRadius: 3,
         elevation: 1
     },
