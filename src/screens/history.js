@@ -69,15 +69,15 @@ class History extends Component {
     render(){
         return (
             <View style={styles.mainContainer}>
-                <View style={styles.tableContainer}>
+                <View style={[styles.tableContainer, {paddingVertical: 8, elevation: 0.8, backgroundColor: '#fff'}]}>
                     <View style={styles.tableHeaders}>
-                        <Text>Date</Text>
+                        <Text style={{fontWeight: 'bold'}}>Date</Text>
                     </View>
                     <View style={styles.tableHeaders}>
-                        <Text>Petrol</Text>
+                        <Text style={{fontWeight: 'bold'}}>Petrol</Text>
                     </View>
                     <View style={styles.tableHeaders}>
-                        <Text>Status</Text>
+                        <Text style={{fontWeight: 'bold'}}>Status</Text>
                     </View>
                 </View>
                 <ScrollView>
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     tableHeaders: {
         flex: 1,
         alignItems: 'center',
-        paddingVertical: 8
+        paddingVertical: 8,
     },
     tableData: {
         flex: 1,
