@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, TouchableNativeFeedback, Linking, RefreshControl } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import Modal from "react-native-modal.1"; //scrollview added
+import Modal from "../../overridden_modules/react-native-modal"; //scrollview added
 import axios from 'axios';
 import MyColors from '../config/colors';
 import Header from '../components/header';
@@ -118,6 +118,7 @@ class Newsfeed extends Component {
                                     onRefresh={this._onRefresh}
                                 />
                             }>
+                            <View style={{padding: 8}}/>
                             { this.renderNews() }
                         </ScrollView>
                         { this.displayModal() }
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
         borderRadius: 3,
         backgroundColor: '#FFF',
         elevation: 1,
-        marginVertical: 8,
+        marginBottom: 16,
         marginHorizontal: 16,
     },
     newsTitle: {
