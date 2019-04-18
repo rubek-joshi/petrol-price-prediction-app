@@ -4,14 +4,13 @@ import Icon from 'react-native-vector-icons/Entypo';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Modal from "../../overridden_modules/custom_modal"; //scrollview added
 import axios from 'axios';
-import MyColors from '../config/colors';
 import Header from '../components/header';
 import Loading from '../components/loadingIndicator';
 import {ServerIp} from '../config/server';
 
 class Newsfeed extends Component {
     static navigationOptions = {
-        tabBarIcon: <Icon name="news" size={24} color={MyColors.MAIN_TAB_MENU} />
+        tabBarIcon: ({tintColor}) => (<Icon name="news" size={24} color={tintColor} />)
     }
     constructor(props) {
         super(props);

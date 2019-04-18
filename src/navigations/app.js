@@ -20,7 +20,7 @@ const HomeStack = createStackNavigator({
 });
 
 HomeStack.navigationOptions = {
-    tabBarIcon: <Icon name="home" size={24} color={MyColors.MAIN_TAB_MENU} />
+    tabBarIcon: ({tintColor}) => (<Icon name="home" size={24} color={tintColor} />)
 }
 
 const InfoStack = createStackNavigator({
@@ -30,7 +30,7 @@ const InfoStack = createStackNavigator({
 });
 
 InfoStack.navigationOptions = {
-    tabBarIcon: <Icon2 name="information-variant" size={24} color={MyColors.MAIN_TAB_MENU} />
+    tabBarIcon: ({tintColor}) => (<Icon2 name="information-variant" size={24} color={tintColor} />)
 }
 
 const TabNavigator = createMaterialBottomTabNavigator({
@@ -41,8 +41,9 @@ const TabNavigator = createMaterialBottomTabNavigator({
 },{
     initialRouteName: 'Home',
     backBehavior: 'initialRoute',
-    activeTintColor: '#FFF',
-    inactiveTintColor: '#000',
+    activeTintColor: `${MyColors.MAIN_TAB_MENU}`,
+    inactiveTintColor: '#373c3d',
+    inactiveColor: '#373c3d',
     barStyle: {
         backgroundColor: `${MyColors.PRIMARY}`,
         paddingVertical: 5
