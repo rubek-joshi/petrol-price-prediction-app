@@ -1,4 +1,4 @@
-declare module "react-native-modal" {
+declare module "custom_modal" {
   import { Component, ReactNode } from "react";
   import { StyleProp, ViewStyle } from "react-native";
 

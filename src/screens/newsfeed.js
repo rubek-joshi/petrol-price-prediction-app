@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, TouchableNativeFeedback, Linking, RefreshControl } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import Modal from "../../overridden_modules/react-native-modal"; //scrollview added
+import Modal from "../../overridden_modules/custom_modal"; //scrollview added
 import axios from 'axios';
 import MyColors from '../config/colors';
 import Header from '../components/header';

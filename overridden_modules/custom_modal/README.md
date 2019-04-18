@@ -37,10 +37,10 @@ This library is available on npm, install it with: `npm install --save react-nat
 
 Since react-native-modal is an extension of the original react native modal, it works in a similar fashion [react-native original modal](https://facebook.github.io/react-native/docs/modal.html).
 
-1.  Import react-native-modal:
+1.  Import custom_modal:
 
 ```javascript
-import Modal from "react-native-modal";
+import Modal from "custom_modal";
 ```
 
 2.  Create a modal and nest its content inside of it:
@@ -87,7 +87,7 @@ Inside the modal there is another button that, when pressed, sets `isModalVisibl
 ```javascript
 import React, { Component } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import Modal from "react-native-modal";
+import Modal from "custom_modal";
 
 export default class ModalTester extends Component {
   state = {
@@ -241,7 +241,7 @@ Also, if you're providing the `deviceHeight` and `deviceWidth` props you'll have
 ### I can't show multiple modals one after another
 
 Unfortunately right now react-native doesn't allow multiple modals to be displayed at the same time.
-This means that, in `react-native-modal`, if you want to immediately show a new modal after closing one you must first make sure that the modal that your closing has completed its hiding animation by using the `onModalHide` prop.
+This means that, in `custom_modal`, if you want to immediately show a new modal after closing one you must first make sure that the modal that your closing has completed its hiding animation by using the `onModalHide` prop.
 
 ### I can't show multiple modals at the same time
 
