@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, Image, TouchableNativeFeedback, Linking, RefreshControl } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, TextInput, ScrollView, Image, TouchableNativeFeedback, Linking, RefreshControl } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Modal from "../../overridden_modules/custom_modal"; //scrollview added
 import axios from 'axios';
+import {connect} from 'react-redux';
 import Header from '../components/header';
 import Loading from '../components/loadingIndicator';
 import {ServerIp} from '../config/server';
+import MyColors from '../config/colors';
 
 class Newsfeed extends Component {
     static navigationOptions = {
@@ -19,9 +21,19 @@ class Newsfeed extends Component {
             isLoading: true,
             news: null,
             newsIndex: 0,
+            newsComments: [],
+            comment: '',
             isModalVisible: false,
             isRefreshing: false
         }
+        this.renderNews = this.renderNews.bind(this);
+        this.renderComments = this.renderComments.bind(this);
+        this.postComment = this.postComment.bind(this);
+        this.displayModal = this.displayModal.bind(this);
+        this.handleTryAgain = this.handleTryAgain.bind(this);
+    }
+
+    componentDidMount(){
         axios.get('/api/news')
         .then(response => {
             console.log(response);
@@ -31,9 +43,6 @@ class Newsfeed extends Component {
             console.log(error);
             this.setState({isLoading: false})
         });
-        this.renderNews = this.renderNews.bind(this);
-        this.displayModal = this.displayModal.bind(this);
-        this.handleTryAgain = this.handleTryAgain.bind(this);
     }
 
     handleTryAgain(){
@@ -67,10 +76,34 @@ class Newsfeed extends Component {
                         <Text style={{fontWeight: '600', fontSize: 40, color: '#000', opacity: 0.87}}>{news.news_title}</Text>
                         <Text>{news.news_body}</Text>
                         <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'center'}}>
-                            <Text onPress={() => Linking.openURL(news.source)}>Go to source!</Text>
+                            <Text onPress={() => Linking.openURL(news.source)}>Visit source</Text>
+                        </View>
+                        <View style={{paddingTop: 16}}>
+                            <Text style={{fontSize: 20, fontWeight: 'bold'}}>Comments</Text>
+                            { this.renderComments() }
+
+                            { this.props.auth.isAuthenticated &&
+                                <View>
+                                    <View style={{flexDirection: 'row'}}>
+                                        <Text>{new Date().toLocaleString()}</Text>
+                                    </View>
+                                    <TextInput placeholder='Write a comment...'
+                                        style={{backgroundColor: '#EFF0F2', paddingHorizontal: 16, borderRadius: 5}}
+                                        value={this.state.comment}
+                                        onChangeText={(value) => this.setState({comment: value})}
+                                        />
+                                    <View style={{flex: 1, alignItems: 'flex-end', marginTop: 8}}>
+                                        <TouchableOpacity 
+                                            onPress={() => this.postComment()}
+                                            style={{alignItems: 'center', justifyContent: 'center', padding: 8, width: 100, borderRadius: 3, backgroundColor: `${MyColors.PRIMARY}`}}>
+                                            <Text style={{color: '#fff'}}>Post</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            }
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.backButton} onPress={() => this.setState({isModalVisible: false})}>
+                    <TouchableOpacity style={styles.backButton} onPress={() => this.setState({isModalVisible: false, newsComments: []})}>
                         <MaterialIcon name='arrow-back' size={30} color='#fff'/>
                     </TouchableOpacity>
                 </View>
@@ -78,11 +111,64 @@ class Newsfeed extends Component {
         );
     }
 
+    renderComments(){
+        return this.state.newsComments.map((value, index) => {
+            return (
+                <View key={value.comment_id} style={{paddingVertical: 16, borderTopWidth: StyleSheet.hairlineWidth}}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{fontWeight: 'bold', flex: 1}}>{value.full_name}</Text>
+                        <Text>{value.commented_at}</Text>
+                    </View>
+                    <Text>{value.comment}</Text>
+                </View>
+            );
+        });
+    }
+
+    postComment(){
+        const comment = this.state.comment;
+        if(!comment.trim()){
+            return;
+        }
+        const news_id = this.state.news[this.state.newsIndex].id;
+        axios.post('/api/news/' + news_id + '/comment', {
+            user_id: this.props.auth.userDetails.user_id,
+            comment: comment
+        }, {
+            headers: {
+                Authorization: this.props.auth.token
+            }
+        })
+        .then(response => {
+            axios.get('/api/news/' + news_id + '/comments')
+            .then((response) => {
+                this.setState({newsComments: response.data});
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    _openNews = (news_id, index) => {
+        axios.get('/api/news/' + news_id + '/comments')
+        .then((response) => {
+            this.setState({newsComments: response.data});
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+        this.setState({isModalVisible: true, newsIndex: index})
+    }
+
     renderNews(){
         return this.state.news.map((newsItem, index) => {
             return (
                 <View style={styles.newsContainer} key={newsItem.id}>
-                    <TouchableNativeFeedback style={styles.newsContainer} onPress={() => this.setState({isModalVisible: true, newsIndex: index})}>
+                    <TouchableNativeFeedback style={styles.newsContainer} onPress={() => this._openNews(newsItem.id, index)}>
                         <View style={{paddingHorizontal: 16}}>
                             <Text style={styles.newsTitle}>{newsItem.news_title}</Text>
                             <Text style={{paddingBottom: 8}}>Date: {newsItem.date_published}</Text>
@@ -179,4 +265,8 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Newsfeed;
+const mapStateToProps = (state) => ({
+    auth: state.auth
+});
+
+export default connect(mapStateToProps, null)(Newsfeed);
