@@ -5,6 +5,8 @@ import { TextField } from 'react-native-material-textfield';
 import AnimateLoadingButton from 'react-native-animate-loading-button';
 import axios from 'axios';
 import {ServerIp} from '../config/server';
+import {saveToken} from '../actions';
+import {connect} from 'react-redux';
 
 class SignIn extends Component {
     constructor(props) {
@@ -24,12 +26,13 @@ class SignIn extends Component {
             password: this.state.password
         })
         .then(response => {
-            console.log(response);
-            this.loadingButton.showLoading(false);
+            console.log(response.data.token);
+            this.props.saveToken(response.data.token);
             ToastAndroid.show('Login successful', ToastAndroid.SHORT);
             this.props.navigation.navigate('App');
         })
         .catch(error => {
+            console.log(error)
             this.loadingButton.showLoading(false);
             ToastAndroid.show('Login failed', ToastAndroid.LONG);
         });
@@ -123,4 +126,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SignIn;
+export default connect(null, {saveToken})(SignIn);

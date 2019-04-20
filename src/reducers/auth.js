@@ -1,5 +1,6 @@
+import {SAVE_TOKEN, LOG_OUT} from '../actions'
+
 const initialState = {
-    isLoggingIn: false,
     isAuthenticated: false,
     token: '',
     userDetails: {
@@ -9,6 +10,18 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch(action.type){
+        case SAVE_TOKEN:
+            return {
+                ...state,
+                isAuthenticated: true,
+                token: 'Bearer ' + action.payload
+            };
+        case LOG_OUT:
+            return {
+                ...state,
+                isAuthenticated: false,
+                token: ''
+            }
         default:
             return state;
     }

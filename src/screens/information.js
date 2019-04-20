@@ -4,6 +4,7 @@ import Textarea from 'react-native-textarea';
 import Modal from 'react-native-modal';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import {connect} from 'react-redux';
+import {logOut} from '../actions';
 import axios from 'axios';
 import IntroSlides from '../components/introSlides';
 import {ServerIp} from '../config/server';
@@ -31,6 +32,7 @@ class Information extends Component {
         }
         this.feedbackModal = this.feedbackModal.bind(this);
         this.sendFeedback = this.sendFeedback.bind(this);
+        this.logOut = this.logOut.bind(this);
     }
     _onDone = () => {
         this.setState({ showIntro: false });
@@ -98,6 +100,11 @@ class Information extends Component {
         )
     }
 
+    logOut(){
+        this.props.logOut();
+        this.props.navigation.navigate('Auth');
+    }
+
     render(){
         if(this.state.showIntro){
             return <AppIntroSlider slides={IntroSlides} onDone={this._onDone}
@@ -120,8 +127,8 @@ class Information extends Component {
                     <TouchableOpacity style={styles.option} onPress={() => this._toggleModal()}>
                         <Text>Send Feedback</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.option} onPress={() => this.props.navigation.navigate('Auth')}>
-                        <Text>Log Out</Text>
+                    <TouchableOpacity style={styles.option} onPress={() => this.logOut()}>
+                        <Text>{this.props.user.isAuthenticated ? "Log out" : "Log in"}</Text>
                     </TouchableOpacity>
                     {this.feedbackModal()}
                 </ScrollView>
@@ -187,4 +194,4 @@ const mapStateToProps = (state) => ({
     user: state.auth
 });
 
-export default connect(mapStateToProps, null)(Information);
+export default connect(mapStateToProps, {logOut})(Information);
