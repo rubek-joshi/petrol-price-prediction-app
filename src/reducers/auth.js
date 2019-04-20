@@ -1,4 +1,4 @@
-import {SAVE_TOKEN, LOG_OUT} from '../actions'
+import {SAVE_TOKEN, LOG_OUT, SAVE_USER} from '../actions'
 
 const initialState = {
     isAuthenticated: false,
@@ -16,11 +16,21 @@ export default (state = initialState, action) => {
                 isAuthenticated: true,
                 token: 'Bearer ' + action.payload
             };
+        case SAVE_USER:
+            return {
+                ...state,
+                userDetails : {
+                    full_name: action.payload
+                }
+            }
         case LOG_OUT:
             return {
                 ...state,
                 isAuthenticated: false,
-                token: ''
+                token: '',
+                userDetails: {
+                    full_name: 'Guest'
+                }
             }
         default:
             return state;
