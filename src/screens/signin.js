@@ -28,7 +28,7 @@ class SignIn extends Component {
         .then(response => {
             console.log(response.data);
             this.props.saveToken(response.data.token);
-            this.props.saveUser(response.data.full_name);
+            this.props.saveUser(response.data.user_id, response.data.full_name);
             ToastAndroid.show('Login successful', ToastAndroid.SHORT);
             this.props.navigation.navigate('App');
         })

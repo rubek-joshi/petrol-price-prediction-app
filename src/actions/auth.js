@@ -15,9 +15,12 @@ export const logOut = () => {
     }
 }
 
-export const saveUser = (user) => {
+export const saveUser = (id, name) => {
     return {
         type: SAVE_USER,
-        payload: user
+        payload: {
+            user_id: id,
+            full_name: name
+        }
     }
 }

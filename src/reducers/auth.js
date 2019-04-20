@@ -4,7 +4,8 @@ const initialState = {
     isAuthenticated: false,
     token: '',
     userDetails: {
-        full_name: 'Guest'
+        user_id: 0,
+        full_name: 'Guest',
     }
 }
 
@@ -20,7 +21,8 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 userDetails : {
-                    full_name: action.payload
+                    user_id: action.payload.user_id,
+                    full_name: action.payload.full_name
                 }
             }
         case LOG_OUT:
@@ -29,6 +31,7 @@ export default (state = initialState, action) => {
                 isAuthenticated: false,
                 token: '',
                 userDetails: {
+                    user_id: 0,
                     full_name: 'Guest'
                 }
             }
