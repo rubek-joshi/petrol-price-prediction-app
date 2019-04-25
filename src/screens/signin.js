@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Keyboard, Image, ToastAndroid } from 'react-native';
+import {CheckBox} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextField } from 'react-native-material-textfield';
 import AnimateLoadingButton from 'react-native-animate-loading-button';
@@ -14,7 +15,8 @@ class SignIn extends Component {
         axios.defaults.baseURL = ServerIp;
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            stayLoggedIn: true
         }
         this._onPressHandler = this._onPressHandler.bind(this);
     }
@@ -27,7 +29,9 @@ class SignIn extends Component {
         })
         .then(response => {
             console.log(response.data);
-            this.props.saveToken(response.data.token);
+            if(this.state.stayLoggedIn){
+                this.props.saveToken(response.data.token);
+            }
             this.props.saveUser(response.data.user_id, response.data.full_name);
             ToastAndroid.show('Login successful', ToastAndroid.SHORT);
             this.props.navigation.navigate('App');
@@ -45,7 +49,7 @@ class SignIn extends Component {
                     <View style={styles.logoContainer}>
                         <Image source={require('../assets/logo.png')} style={{height: 200, width: 200}} resizeMode='contain'/>
                     </View>
-                    <View style={{marginBottom: 50}}>
+                    <View style={{marginBottom: 20}}>
                         <TextField
                             textColor={'#FFF'}
                             baseColor={'#FFF'}
@@ -73,6 +77,21 @@ class SignIn extends Component {
                             blurOnSubmit={false}
                             secureTextEntry={true}
                         />
+
+                        <View style={{flexDirection: 'row'}}>
+                            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                                <CheckBox title='Keep me logged out' checkedTitle='Keep me logged in'
+                                checked={this.state.stayLoggedIn}
+                                onPress={() => this.setState({stayLoggedIn: !this.state.stayLoggedIn})}
+                                containerStyle={{backgroundColor: 'transparent', padding: 0, margin: 0, borderWidth: 0}}
+                                textStyle={{color: '#fff', fontWeight: 'normal'}}
+                                checkedColor='#fff'
+                                uncheckedColor='#fff'/>
+                            </View>
+                            <TouchableOpacity style={{paddingVertical: 8}} onPress={() => this.props.navigation.navigate('Password')}>
+                                <Text style={{color: '#FFF', textDecorationLine: 'underline'}}>Forgot Password?</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
 
                     <AnimateLoadingButton
