@@ -13,6 +13,7 @@ import InformationScreen from '../screens/information';
 import PetrolStationsScreen from '../screens/petrolPumpsMap';
 import HistoryScreen from '../screens/history';
 import TermsConditionsScreen from '../screens/termsConditions';
+import AboutScreen from '../screens/about';
 
 const HomeStack = createStackNavigator({
     Home: HomeScreen,
@@ -57,6 +58,7 @@ TabNavigator.navigationOptions = {
 const MainStack = createStackNavigator({
     Tabs: TabNavigator,
     History: HistoryScreen,
+    About: AboutScreen
     /* any other route you want to render above the tab bar */
 });
 

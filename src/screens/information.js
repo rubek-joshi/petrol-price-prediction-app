@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView, TextInput, ToastAndroid } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView, TextInput, ToastAndroid, Linking } from 'react-native';
 import Textarea from 'react-native-textarea';
 import Modal from 'react-native-modal';
-import AppIntroSlider from 'react-native-app-intro-slider';
 import {connect} from 'react-redux';
 import {logOut} from '../actions';
 import axios from 'axios';
-import IntroSlides from '../components/introSlides';
 import {ServerIp} from '../config/server';
 import MyColors from '../config/colors';
 
@@ -25,7 +23,6 @@ class Information extends Component {
         super(props);
         axios.defaults.baseURL = ServerIp;
         this.state = {
-            showIntro: false,
             isModalVisible: false,
             feedbackTitle: '',
             feedback: ''
@@ -33,12 +30,6 @@ class Information extends Component {
         this.feedbackModal = this.feedbackModal.bind(this);
         this.sendFeedback = this.sendFeedback.bind(this);
         this.logOut = this.logOut.bind(this);
-    }
-    _onDone = () => {
-        this.setState({ showIntro: false });
-    }
-    _onSkip = () => {
-        this.setState({ showIntro: false });
     }
     _toggleModal = () => {
         this.setState({isModalVisible: !this.state.isModalVisible})
@@ -106,34 +97,32 @@ class Information extends Component {
     }
 
     render(){
-        if(this.state.showIntro){
-            return <AppIntroSlider slides={IntroSlides} onDone={this._onDone}
-            showSkipButton={true} onSkip={this._onSkip}/>;
-        } else {
-            return (
-                <ScrollView style={styles.mainContainer}>
-                    <TouchableOpacity style={styles.option} onPress={() => this._toggleModal()}>
-                        <Text>Learn More</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.option} onPress={() => this.props.navigation.navigate('PetrolPumpMap')}>
-                        <Text>Find Petrol Stations</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.option} onPress={() => this.setState({showIntro: true})}>
-                        <Text>About App</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.option} onPress={() => this.props.navigation.navigate('TermsConditions')}>
-                        <Text>Terms and Conditions</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.option} onPress={() => this._toggleModal()}>
-                        <Text>Send Feedback</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.option} onPress={() => this.logOut()}>
-                        <Text>{this.props.user.isAuthenticated ? "Log out" : "Log in"}</Text>
-                    </TouchableOpacity>
-                    {this.feedbackModal()}
-                </ScrollView>
-            );
-        }
+        return (
+            <ScrollView style={styles.mainContainer}>
+                <TouchableOpacity style={styles.option} onPress={() => this._toggleModal()}>
+                    <Text>Learn More</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.option} onPress={() => this.props.navigation.navigate('PetrolPumpMap')}>
+                    <Text>Find Petrol Stations</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.option} onPress={() => this.props.navigation.navigate('About')}>
+                    <Text>About App</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.option} onPress={() => this.props.navigation.navigate('TermsConditions')}>
+                    <Text>Terms and Conditions</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.option} onPress={() => this._toggleModal()}>
+                    <Text>Send Feedback</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.option} onPress={() => Linking.openURL('https://play.google.com/store/apps/details?id=com.gorro.nothing')}>
+                    <Text>Rate this app</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.option} onPress={() => this.logOut()}>
+                    <Text>{this.props.user.isAuthenticated ? "Log out" : "Log in"}</Text>
+                </TouchableOpacity>
+                {this.feedbackModal()}
+            </ScrollView>
+        );
     }
 }
 
