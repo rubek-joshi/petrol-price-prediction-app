@@ -4,6 +4,9 @@ import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import axios from 'axios';
 import { GasStationsIp } from '../config/server';
 import MyColors from '../config/colors';
+import openGasStation from '../assets/gas-station-open.png';
+import closedGasStation from '../assets/gas-station-closed.png';
+import noDataGasStation from '../assets/gas-station-no-data.png';
 
 const { width, height } = Dimensions.get('window');
 
@@ -81,15 +84,32 @@ class Map extends Component {
     }
     renderGasStations(){
         return this.state.gas_stations.map(marker => {
-            return(
-                <Marker key={marker.id}
-                coordinate={{
-                    latitude: marker.geometry.location.lat,
-                    longitude: marker.geometry.location.lng
-                }}
-                title={marker.name}
-                description={marker.vicinity}/>
-            );
+            console.log(marker);
+            if(marker.opening_hours == undefined){
+                return (
+                    <Marker key={marker.id}
+                        coordinate={{
+                            latitude: marker.geometry.location.lat,
+                            longitude: marker.geometry.location.lng
+                        }}
+                        title={marker.name}
+                        description={marker.vicinity}
+                        image={noDataGasStation}
+                    />
+                );
+            } else {
+                return(
+                    <Marker key={marker.id}
+                        coordinate={{
+                            latitude: marker.geometry.location.lat,
+                            longitude: marker.geometry.location.lng
+                        }}
+                        title={marker.name}
+                        description={marker.vicinity}
+                        image={marker.opening_hours.open_now ? closedGasStation : openGasStation}
+                    />
+                );
+            }
         });
     }
     render(){
