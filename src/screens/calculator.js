@@ -25,7 +25,7 @@ class Calculator extends Component {
     calculateAmount(litreBasis, value) {
         this.setState({userInput: value.replace(/[^0-9]/g, '')}, () => {
             let userInput = this.state.userInput;
-            const currentRate = this.props.rates.latestRates[0].petrol;
+            const currentRate = this.props.rates.latestRates[3].petrol;
             //handling empty input
             if(!userInput) {
                 userInput = '0';
@@ -87,7 +87,7 @@ class Calculator extends Component {
                     <View style={styles.mainContainer}>
                         
                         <View>
-                            <Text>Current Rate: <Text style={{fontWeight: '500'}}>Nrs. {this.props.rates.latestRates[0].petrol}</Text></Text>
+                            <Text>Current Rate: <Text style={{fontWeight: '500'}}>Nrs. {this.props.rates.latestRates[3].petrol}</Text></Text>
                         </View>
     
                         <View style={[styles.box, styles.totalContainer]}>
@@ -97,8 +97,16 @@ class Calculator extends Component {
                                     borderBottomWidth: StyleSheet.hairlineWidth,
                                 }}
                             />
-                            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                                <Text style={styles.result}>{this.state.totalAmount}</Text>
+                            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                                <View style={{flex: 1, alignItems: 'flex-end'}}>
+                                    <Text style={{fontSize:20, paddingTop: 20}}>{this.state.paymentType == 'Litre' ? 'NRs.': ''}</Text>
+                                </View>
+                                <Text style={styles.result}>
+                                    {this.state.totalAmount}
+                                </Text>
+                                <View style={{flex: 1}}>
+                                    <Text style={{fontSize:20, paddingTop: 20}}>{this.state.paymentType == 'Amount' ? 'litre(s)': ''}</Text>
+                                </View>
                             </View>
                         </View>
     
