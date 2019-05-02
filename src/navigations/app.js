@@ -14,6 +14,7 @@ import PetrolStationsScreen from '../screens/petrolPumpsMap';
 import HistoryScreen from '../screens/history';
 import TermsConditionsScreen from '../screens/termsConditions';
 import AboutScreen from '../screens/about';
+import PriceCompostionScreen from '../screens/priceComposition';
 
 const HomeStack = createStackNavigator({
     Home: HomeScreen,
@@ -27,7 +28,8 @@ HomeStack.navigationOptions = {
 const InfoStack = createStackNavigator({
     Info: InformationScreen,
     PetrolPumpMap: PetrolStationsScreen,
-    TermsConditions: TermsConditionsScreen
+    TermsConditions: TermsConditionsScreen,
+    PriceComposition: PriceCompostionScreen
 });
 
 InfoStack.navigationOptions = {

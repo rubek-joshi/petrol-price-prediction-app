@@ -99,7 +99,7 @@ class Information extends Component {
     render(){
         return (
             <ScrollView style={styles.mainContainer}>
-                <TouchableOpacity style={styles.option} onPress={() => this._toggleModal()}>
+                <TouchableOpacity style={styles.option} onPress={() => this.props.navigation.navigate('PriceComposition')}>
                     <Text>Learn More</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.option} onPress={() => this.props.navigation.navigate('PetrolPumpMap')}>
