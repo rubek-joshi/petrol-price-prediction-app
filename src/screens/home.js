@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, AsyncStorage, ScrollView, RefreshControl, View, TouchableOpacity, Text} from 'react-native';
+import { StyleSheet, Dimensions, ScrollView, RefreshControl, View, TouchableOpacity, Text} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { View as AnimatableView } from 'react-native-animatable';
 import PureChart from 'react-native-pure-chart';
@@ -172,7 +173,7 @@ class Home extends Component {
 
     //get last updated date
     _getLastUpdated = () => {
-        AsyncStorage.getItem('lastUpdated', (err, value) => {
+        AsyncStorage.getItem('@lastUpdated', (err, value) => {
             if(err) throw err;
             if(value !== null) {
                 this.setState({lastUpdated: value});
@@ -183,7 +184,7 @@ class Home extends Component {
     // updates the last updated date with current date
     _updateLastUpdated = async () => {
         try {
-            await AsyncStorage.mergeItem('lastUpdated', (new Date().toLocaleDateString()));
+            await AsyncStorage.mergeItem('@lastUpdated', (new Date().toLocaleDateString()));
         } catch (error) {
             console.log(error);
         } finally {

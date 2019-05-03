@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, AsyncStorage, ActivityIndicator} from 'react-native';
+import {StyleSheet, View, ActivityIndicator} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import AppIntroSlider from 'react-native-app-intro-slider';
 
@@ -24,14 +25,14 @@ export default class App extends Component {
   }
 
   componentDidMount(){
-    AsyncStorage.getItem('alreadyUsed').then(value => {
+    AsyncStorage.getItem('@alreadyUsed').then(value => {
       console.log('Already used', value);
       if(value === null) {
-        AsyncStorage.setItem('alreadyUsed', 'true');
-        AsyncStorage.setItem('lastUpdated', (new Date().toLocaleDateString()));
+        AsyncStorage.setItem('@alreadyUsed', 'true');
+        AsyncStorage.setItem('@lastUpdated', (new Date().toLocaleDateString()));
         this.setState({isLoading: false});
       } else {
-        console.log(AsyncStorage.getItem('lastUpdated'));
+        console.log(AsyncStorage.getItem('@lastUpdated'));
         this.setState({showRealApp: true, isLoading: false});
       }
     });
