@@ -25,7 +25,7 @@ class Calculator extends Component {
     calculateAmount(litreBasis, value) {
         this.setState({userInput: value.replace(/[^0-9]/g, '')}, () => {
             let userInput = this.state.userInput;
-            const currentRate = this.props.rates.latestRates[3].petrol;
+            const currentRate = this.props.rates.latestRates[0].petrol;
             //handling empty input
             if(!userInput) {
                 userInput = '0';
@@ -87,7 +87,7 @@ class Calculator extends Component {
                     <View style={styles.mainContainer}>
                         
                         <View>
-                            <Text>Current Rate: <Text style={{fontWeight: '500'}}>Nrs. {this.props.rates.latestRates[3].petrol}</Text></Text>
+                            <Text>Current Rate: <Text style={{fontWeight: '500'}}>Nrs. {this.props.rates.latestRates[0].petrol}</Text></Text>
                         </View>
     
                         <View style={[styles.box, styles.totalContainer]}>
