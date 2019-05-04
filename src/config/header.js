@@ -1,3 +1,3 @@
 export default {
-    HEADER_HEIGHT: 56
+  HEADER_HEIGHT: 56
 };

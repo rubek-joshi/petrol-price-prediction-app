@@ -44,7 +44,7 @@ class SignUp extends Component {
             currentErrors[1] = '';
         }
         if(!this.validatePassword()){
-            currentErrors[2] = 'Password must be minimum 6 characters and contain atleast one letter and one number.'
+            currentErrors[2] = 'Minimum 6 characters and contain atleast 1 letter and number'
         } else {
             currentErrors[2] = ''
         }
@@ -61,6 +61,7 @@ class SignUp extends Component {
                 currentErrors.forEach((value, index, arr) => {
                     arr[index] = '';
                 });
+                this.props.navigation.navigate('SignIn');
             })
             .catch(error => {
                 this.loadingButton.showLoading(false);

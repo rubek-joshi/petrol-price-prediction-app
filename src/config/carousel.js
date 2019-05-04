@@ -1,10 +1,10 @@
-import {Dimensions} from 'react-native';
+import { Dimensions } from "react-native";
 
-const { width: viewportWidth } = Dimensions.get('window');
+const { width: viewportWidth } = Dimensions.get("window");
 
-function wp (percentage) {
-    const value = (percentage * viewportWidth) / 100;
-    return Math.round(value);
+function wp(percentage) {
+  const value = (percentage * viewportWidth) / 100;
+  return Math.round(value);
 }
 
 const slideWidth = wp(100);

@@ -1,3 +1,3 @@
-export * from './rates';
-export * from './terms';
-export * from './auth';
+export * from "./rates";
+export * from "./terms";
+export * from "./auth";

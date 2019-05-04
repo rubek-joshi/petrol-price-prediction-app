@@ -1,18 +1,20 @@
-import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { createSwitchNavigator, createAppContainer } from "react-navigation";
 
-import AuthNav from './auth';
-import AppNav from './app';
-import LoadingScreen from '../screens/loading';
-import ResetPasswordNav from './resetPassword';
+import AuthNav from "./auth";
+import AppNav from "./app";
+import LoadingScreen from "../screens/loading";
+import ResetPasswordNav from "./resetPassword";
 
-export default createAppContainer(createSwitchNavigator(
+export default createAppContainer(
+  createSwitchNavigator(
     {
-        AuthLoading: LoadingScreen,
-        Auth: AuthNav,
-        App: AppNav,
-        Password: ResetPasswordNav
+      AuthLoading: LoadingScreen,
+      Auth: AuthNav,
+      App: AppNav,
+      Password: ResetPasswordNav
     },
     {
-        initialRouteName: 'AuthLoading',
+      initialRouteName: "AuthLoading"
     }
-));
+  )
+);
