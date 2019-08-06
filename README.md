@@ -19,4 +19,4 @@ A petrol price prediction app based on linear regression with other features suc
 ![information](https://user-images.githubusercontent.com/33681318/62556799-5fe51f80-b895-11e9-9416-dbf0227b5183.gif)
 
 # Reset Password
-![resetPassword](https://user-images.githubusercontent.com/33681318/62558677-31694380-b899-11e9-89ce-5db4becc5f65.gif) ![changePassword](https://user-images.githubusercontent.com/33681318/62558944-bb191100-b899-11e9-998f-5660770fd28b.gif)
+![resetPassword](https://user-images.githubusercontent.com/33681318/62558677-31694380-b899-11e9-89ce-5db4becc5f65.gif)    ![changePassword](https://user-images.githubusercontent.com/33681318/62558944-bb191100-b899-11e9-998f-5660770fd28b.gif)
