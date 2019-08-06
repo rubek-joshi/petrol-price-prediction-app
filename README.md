@@ -3,4 +3,4 @@ A petrol price prediction app based on linear regression with other features suc
 
 # Sign in and Sign up
 
-![sign in and sign up](https://user-images.githubusercontent.com/33681318/62552248-0bd63d00-b88d-11e9-87ba-2aa46206325d.gif =250x400)
+![sign in and sign up](https://user-images.githubusercontent.com/33681318/62552248-0bd63d00-b88d-11e9-87ba-2aa46206325d.gif) { height: 300px }
