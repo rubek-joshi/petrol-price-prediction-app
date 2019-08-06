@@ -14,3 +14,6 @@ A petrol price prediction app based on linear regression with other features suc
 
 # Petrol Calculator
 ![calculator](https://user-images.githubusercontent.com/33681318/62556441-98382e00-b894-11e9-9405-52f00e8372b5.gif)
+
+# Information Screen
+![information](https://user-images.githubusercontent.com/33681318/62556799-5fe51f80-b895-11e9-9416-dbf0227b5183.gif)
