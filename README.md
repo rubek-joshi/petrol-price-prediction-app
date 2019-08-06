@@ -3,7 +3,7 @@ A petrol price prediction app based on linear regression with other features suc
 
 # Sign in and Sign up
 
-![sign in and sign up](https://user-images.githubusercontent.com/33681318/62552248-0bd63d00-b88d-11e9-87ba-2aa46206325d.gif)
+![sign in and sign up](https://user-images.githubusercontent.com/33681318/62554797-80ab7600-b891-11e9-8f08-627aa48fa65a.gif)
 
 # Home and History
 ![home and history screen](https://user-images.githubusercontent.com/33681318/62554676-3de99e00-b891-11e9-9dd9-7d064b50b369.gif)
